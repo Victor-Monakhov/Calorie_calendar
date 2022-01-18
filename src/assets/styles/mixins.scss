@@ -1,0 +1,19 @@
+@import "variables.scss";
+
+@mixin media-property($property, $value-xs, $value-sm: 0%, $value-md: 0%, $value-lg: 0%){
+  @if($value-sm == 0%){
+    @media screen and (min-width: $xs) {  #{$property}: $value-xs; }
+  }@else if($value-md == 0%){
+    @media screen and (min-width: $xs) {  #{$property}: $value-xs; }
+    @media screen and (min-width: $sm) {  #{$property}: $value-sm; }
+  }@else if($value-lg == 0%){
+    @media screen and (min-width: $xs) {  #{$property}: $value-xs; }
+    @media screen and (min-width: $sm) {  #{$property}: $value-sm; }
+    @media screen and (min-width: $md) {  #{$property}: $value-md; }
+  }@else {
+    @media screen and (min-width: $xs) {  #{$property}: $value-xs; }
+    @media screen and (min-width: $sm) {  #{$property}: $value-sm; }
+    @media screen and (min-width: $md) {  #{$property}: $value-md; }
+    @media screen and (min-width: $lg) {  #{$property}: $value-lg; }
+  }
+}

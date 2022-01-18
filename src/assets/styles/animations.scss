@@ -1,0 +1,14 @@
+@keyframes tooltip_go_up{
+  0% { bottom: -30%; top: 100%;}
+  100% { bottom: 0; top: 70%;}
+}
+
+@keyframes loader {
+  0% {border-right-color: #90EE90FF; border-bottom-color: transparent; border-left-color: transparent; border-top-color: transparent;}
+  16.6% { border-right-color: #ADD8E6FF; border-bottom-color: #90EE90FF; border-left-color: transparent; border-top-color: transparent;}
+  33.2% { border-right-color: #D3D3D3FF; border-bottom-color: #ADD8E6FF; border-left-color: #90EE90FF; border-top-color: transparent;}
+  49.8% { border-right-color: transparent; border-bottom-color: #D3D3D3FF; border-left-color: #ADD8E6FF; border-top-color: #90EE90FF;}
+  66.4% { border-right-color: transparent; border-bottom-color: transparent; border-left-color: #D3D3D3FF; border-top-color: #ADD8E6FF;}
+  83% { border-right-color: transparent; border-bottom-color: transparent; border-left-color: transparent; border-top-color: #D3D3D3FF;}
+  100% { border-right-color: #90EE90FF; border-bottom-color: transparent; border-left-color: transparent; border-top-color: transparent;}
+}

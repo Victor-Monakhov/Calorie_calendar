@@ -1,0 +1,82 @@
+@import "icons.scss";
+@import "fonts.scss";
+
+.wrapper{
+
+  p{
+    margin: 0;
+    font-family: Roboto-Regular, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px
+  }
+  .header{
+    display: flex;
+    .left-header-part{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 60px;
+      height: 80px;
+      flex-shrink: 0;
+      button{
+        padding: 0;
+        background-color: transparent;
+        border: 0 solid transparent;
+        cursor: pointer;
+      }
+      .settings{
+        width: 50px;
+        height: 50px;
+        background-image: $settings;
+        background-size: cover;
+        flex-shrink: 0;
+        margin: 5px;
+      }
+      .month{
+        display: flex;
+        align-items: center;
+        width: 60px;
+        height: 20px;
+        padding-left: 4px;
+        .drop-down{
+          width: 20px;
+          height: 20px;
+          background-image: $drop-down;
+          background-size: cover;
+        }
+      }
+    }
+    .right-header-part{
+      display: flex;
+      flex-direction: column;
+      .calories-checker{
+        display: grid;
+        height: 50%;
+        .calorie-intake{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+          border: 1px solid green;
+        }
+
+      }
+      .days-wrapper{
+        display: grid;
+        height: 50%;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(1, 1fr);
+        .days{
+          .day{
+            display: flex;
+            justify-content: center;
+            white-space: pre-line;
+            border: 1px solid red;
+          }
+        }
+      }
+    }
+  }
+}
