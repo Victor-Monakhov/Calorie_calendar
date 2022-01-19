@@ -24,6 +24,7 @@
     </div>
   </div>
 </div>
-<div #temp style="width: 100%; height: 300px; background-color: green">
-  {{tmpDate | date: 'dd.MM.yyyy'}}
+<div style="width: 100%; height: 300px; background-color: green"
+     (swipeleft)="onSwipeLeft()"
+     (swiperight)="onSwipeRight()">
 </div>

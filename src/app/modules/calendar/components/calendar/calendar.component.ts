@@ -1,68 +1,113 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {HammerGestureConfig} from "@angular/platform-browser";
-import {fromEvent, switchMap, takeWhile} from "rxjs";
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit, AfterViewInit {
+export class CalendarComponent implements OnInit {
 
   public readonly weekDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   public weekDaysNumbers: string[] = [];
   public weekCounter: number = 0;
   public date: Date = new Date();
-  public tmpDate?:Date;
-  public hammerConfig = new HammerGestureConfig()
-
-  @ViewChild('temp') public element?: ElementRef;
+  private month: number;
+  private swipeDirection?: string = 'left';
+  private pastSwipeDirection?: string = 'left';
 
   constructor() {
-
+    this.month = this.date.getMonth();
   }
 
   ngOnInit(): void {
     this.updateWeekDays();
-
   }
-  ngAfterViewInit() {
-    const hammer=this.hammerConfig.buildHammer(this.element?.nativeElement as HTMLElement)
-    fromEvent(hammer, "swipeleft")
-      .subscribe((res: any) => {
-        this.onSwipeLeft();
-      });
-    fromEvent(hammer, "swiperight")
-      .subscribe((res: any) => {
-        console.log('hi');
-      })
+
+  private getDaysInMonth(year: number, month: number): number{
+    return new Date(year, month + 1, 0).getDate();
+  }
+
+  private getWeekDay(date: Date): number{
+    let day: number = date.getDay() - 1;
+    if(day === -1){
+      day = 6;
+    }
+    return day;
+  }
+
+  private leftSwipeDate(daysInMonth: number, newDaysInMonth:number, constDate: number, constMonth: number, toMonday: number): void{
+    this.weekDays.forEach((item, i) => {
+      if(daysInMonth > newDaysInMonth || daysInMonth < newDaysInMonth){
+        this.date.setMonth(this.date.getMonth() - 1);
+        this.date.setDate(constDate - toMonday + i);
+        this.date.setMonth(this.month);
+      } else {
+        this.date.setMonth(constMonth);
+        this.date.setDate(constDate - toMonday + i);
+      }
+      if(this.date.getDate() === 1){
+        this.date.setMonth(++this.month);
+        newDaysInMonth = this.getDaysInMonth(this.date.getFullYear(), this.date.getMonth());
+      }
+      this.weekDaysNumbers.push(`${this.date.getDate()}\n${this.weekDays[i]}\n${this.date.getMonth()}`);
+    });
+  }
+
+  private rightSwipeDate(daysInMonth: number, newDaysInMonth:number, constDate: number, constMonth: number, toMonday: number): void{
+    this.weekDays.forEach((item, i) => {
+      if(daysInMonth > newDaysInMonth || daysInMonth < newDaysInMonth){
+        this.date.setMonth(this.date.getMonth() - 1);
+        this.date.setDate(constDate - toMonday + i);
+        this.date.setMonth(this.month);
+      } else {
+       this.date.setMonth(constMonth);
+       this.date.setDate(constDate - toMonday + i);
+      }
+      if(this.date.getDate() === 1){
+        this.date.setMonth(++this.month);
+        newDaysInMonth = this.getDaysInMonth(this.date.getFullYear(), this.date.getMonth());
+      }
+      this.weekDaysNumbers.push(`${this.date.getDate()}\n${this.weekDays[i]}\n${this.date.getMonth()}`);
+    });
   }
 
 
   public updateWeekDays(){
-    let daysInMonth: number = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
-    const cloneDate: Date = new Date();
-    let sum = this.weekCounter + this.date.getDate();
+    const daysInMonth: number = this.getDaysInMonth(this.date.getFullYear(), this.date.getMonth());
+    let newDaysInMonth: number = daysInMonth;
     this.date.setDate(this.date.getDate() + this.weekCounter);
-    console.log(this.date.getMonth());
-    if(sum > daysInMonth){
-      this.date.setMonth(this.date.getMonth());
+    const constDate: number = this.date.getDate();
+    const constMonth: number = this.date.getMonth();
+    const toMonday: number = this.getWeekDay(this.date);
+    this.weekDaysNumbers = [];
+   if(this.swipeDirection === 'left') {
+     // if(this.pastSwipeDirection === 'right'){
+     //   --this.month;
+     // }
+     this.leftSwipeDate(daysInMonth, newDaysInMonth, constDate, constMonth, toMonday);
     }
-    cloneDate.setMonth(this.date.getMonth());
-    let day: number = this.date.getDay() - 1;
-    if(day === -1){
-      day = 6;
+    if(this.swipeDirection === 'right') {
+      //this.month = constMonth;
+      // this.pastSwipeDirection === 'left' ||
+      // if( this.date.getDate() - 7 < 0){
+      //   --this.month;
+      // }
+      console.log(this.month);
+      this.rightSwipeDate(daysInMonth, newDaysInMonth, constDate, constMonth, toMonday);
     }
-    this.weekDaysNumbers.length = 0;
-    for(let i = 0; i < this.weekDays.length; ++i ) {
-      cloneDate.setDate(this.date.getDate() - day + i);
-      this.weekDaysNumbers.push(`${cloneDate.getDate()}\n${this.weekDays[i]}\n${cloneDate.getMonth()}`);
-    }
-    this.tmpDate = cloneDate;
+    this.date.setMonth(constMonth);
+    this.date.setDate(constDate);
+    this.pastSwipeDirection = this.swipeDirection;
   }
 
   public onSwipeLeft(){
     this.weekCounter = 7;
+    this.swipeDirection = 'left';
+    this.updateWeekDays();
+  }
+  public onSwipeRight(){
+    this.weekCounter = -7;
+    this.swipeDirection = 'right';
     this.updateWeekDays();
   }
 }

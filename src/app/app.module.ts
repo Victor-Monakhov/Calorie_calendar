@@ -1,5 +1,5 @@
 import {Injectable, NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig, HammerModule} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import * as Hammer from "hammerjs";
+
 
 @NgModule({
   declarations: [
@@ -17,6 +20,8 @@ import { AppEffects } from './app.effects';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    HammerModule,
     StoreModule.forRoot(reducers, {
       metaReducers
     }),

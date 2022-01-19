@@ -5,14 +5,12 @@ import {CalendarRoutingModule} from "./calendar-routing.module";
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from "@angular/platform-browser";
 import * as Hammer from "hammerjs";
 import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
-// @Injectable({
-//   providedIn: 'root'
-// })
+
 // export class MyHammerConfig extends HammerGestureConfig {
 //   override overrides = <any> {
 //     swipe: {direction: Hammer.DIRECTION_ALL },
-//     swipeleft: {direction: Hammer.DIRECTION_LEFT},
 //   };
 // }
 
