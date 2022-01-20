@@ -10,7 +10,6 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import * as Hammer from "hammerjs";
 
 
 @NgModule({
