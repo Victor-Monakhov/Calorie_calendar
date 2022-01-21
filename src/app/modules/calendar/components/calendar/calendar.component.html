@@ -30,17 +30,17 @@
           <div class="time" *ngFor="let time of times">{{time}}</div>
       </div>
       <div class="vertical-layer">
-        <div class="cell-wrapper" *ngFor="let i of rows">
+        <div class="cell-wrapper" *ngFor="let i of times">
         </div>
       </div>
     </div>
     <div class="right-body-part">
       <div class="horizontal-layer">
-        <div *ngFor="let i of columns"></div>
+        <div *ngFor="let i of weekDays"></div>
       </div>
       <div class="food-info-container">
-        <div class="cell-wrapper" *ngFor="let meal of meals;">
-            <div class="food-info" (click)="onFood(meal)">
+        <div class="cell-wrapper" *ngFor="let key of keys;">
+            <div class="food-info" (click)="onFood(key)">
             </div>
         </div>
       </div>

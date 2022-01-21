@@ -1,0 +1,52 @@
+<button class="cancel-btn" (click)="onCancel()">Cancel</button>
+<div class="wrapper">
+  <div class="title-wrapper">
+    <h1>New meal</h1>
+  </div>
+  <div class="form-wrapper">
+    <label for="name">Title</label>
+    <input #title="ngModel"
+           class="form-control"
+           type="text"
+           id="name"
+           required minlength="2" maxlength="15" pattern="[a-zA-Z0-9 ]*"
+           [(ngModel)]="meal.name"
+           [ngStyle]="{'border-bottom: #df4759' : title.invalid}">
+<!--    -->
+  </div>
+  <div class="kcal-time-wrapper">
+    <div class="form-wrapper">
+      <label for="kcal">Kcal</label>
+      <input #kcal="ngModel"
+             class="form-control"
+             type="text"
+             id="kcal"
+             required minlength="1" maxlength="4" pattern="[0-9]*"
+             [(ngModel)]="meal.kcal"
+             [ngClass]="{'invalid-input' : kcal.invalid}">
+    </div>
+    <div class="form-wrapper">
+      <label for="time">Time</label>
+      <input class="form-control" type="text" id="time" [(ngModel)]="meal.time">
+    </div>
+  </div>
+  <div class="form-wrapper">
+    <label for="fats">Fats (gm)</label>
+    <input class="form-control" type="text" id="fats" [(ngModel)]="meal.fats">
+  </div>
+  <div class="form-wrapper">
+    <label for="proteins">Proteins (gm)</label>
+    <input class="form-control" type="text" id="proteins" [(ngModel)]="meal.proteins">
+  </div>
+  <div class="form-wrapper">
+    <label for="carbohydrates">Carbohydrates (gm)</label>
+    <input class="form-control" type="text" id="carbohydrates" name="carbohydrates" [(ngModel)]="meal.carbohydrates">
+  </div>
+  <div class="form-wrapper">
+    <label for="photo">Add photo</label>
+    <input type="image" id="photo" src="" alt="">
+  </div>
+  <button class="add-meal" *ngIf="">Add meal</button>
+
+</div>
+
