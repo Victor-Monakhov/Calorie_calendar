@@ -1,8 +1,9 @@
-<div class="wrapper" (swipeleft)="onSwipeLeft()"
+<div class="wrapper"
+     (swipeleft)="onSwipeLeft()"
      (swiperight)="onSwipeRight()">
   <div class="header">
     <div class="left-header-part">
-      <button class="settings"></button>
+      <button class="settings" (click)="onSettings()"></button>
       <button class="month">
         <p>{{months[date.getMonth()]}}</p>
         <div class="drop-down"></div>
@@ -10,38 +11,41 @@
     </div>
     <div class="right-header-part">
       <div class="calories-checker">
-        <div class="calorie-intake">
-          1000
+        <div class="calorie-intake" *ngFor="let calories of totalCalories">
+          {{calories === 0 ? '' : calories}}
         </div>
       </div>
       <div class="days-wrapper">
-        <div class="days" *ngFor="let day of weekDaysNumbers">
-          <div class="day">
+        <div class="day" *ngFor="let day of weekDaysNumbers; let i = index">
+          <p class="date"
+            [ngClass]="{'current-day': day + date.getMonth() + date.getFullYear() === currentDay}">
             {{day}}
-          </div>
+          </p>
+          <p>{{weekDays[i]}}</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="body">
-    <div class="left-body-part">
-      <div class="time-wrapper">
-          <div class="time" *ngFor="let time of times">{{time}}</div>
-      </div>
-      <div class="vertical-layer">
-        <div class="cell-wrapper" *ngFor="let i of times">
-        </div>
+    <div class="left-body-part" [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">
+      <div class="time-wrapper" *ngFor="let time of times">
+        <div class="time">{{time}}</div>
+        <div class="vertical-layer"></div>
       </div>
     </div>
     <div class="right-body-part">
       <div class="horizontal-layer">
         <div *ngFor="let i of weekDays"></div>
       </div>
-      <div class="food-info-container">
+      <div class="food-info-container" [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">
         <div class="cell-wrapper" *ngFor="let key of keys;">
-            <div class="food-info" (click)="onFood(key)">
-            </div>
+          <span>{{getMeal(key)}}</span>
+          <div class="food-info"
+               [ngClass]="{'is-info' : mealInfo}"
+               (click)="onFood(key)">
+            {{mealInfo}}
+          </div>
         </div>
       </div>
     </div>

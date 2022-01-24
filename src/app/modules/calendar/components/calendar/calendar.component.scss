@@ -3,10 +3,11 @@
 
 $cell-height: 6vh;
 
-.wrapper{
+.wrapper {
   position: relative;
   min-width: 300px;
-  p{
+
+  p {
     margin: 0;
     font-family: Roboto-Regular, sans-serif;
     font-style: normal;
@@ -14,12 +15,19 @@ $cell-height: 6vh;
     font-size: 14px;
     line-height: 16px
   }
+
   .cell-wrapper {
     position: relative;
     height: 0;
     padding-top: 100%;
+    border-left: 1px solid #D8D5D5;
+    border-top: 1px solid #D8D5D5;
+    span {
+      display: none;
+    }
   }
-  .header{
+
+  .header {
     display: flex;
     position: fixed;
     top: 0;
@@ -27,19 +35,22 @@ $cell-height: 6vh;
     right: 0;
     z-index: 1;
     background-color: #FFFFFF;
-    .left-header-part{
+
+    .left-header-part {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 60px;
       flex-shrink: 0;
-      button{
+
+      button {
         padding: 0;
         background-color: transparent;
         border: 0 solid transparent;
         cursor: pointer;
       }
-      .settings{
+
+      .settings {
         width: 50px;
         height: 50px;
         background-image: $settings;
@@ -47,18 +58,21 @@ $cell-height: 6vh;
         flex-shrink: 0;
         margin: 5px;
       }
-      .month{
+
+      .month {
         display: flex;
         align-items: center;
         width: 60px;
         height: 20px;
         padding-left: 4px;
-        p{
+
+        p {
           overflow: hidden;
           text-overflow: ellipsis;
           width: 39px;
         }
-        .drop-down{
+
+        .drop-down {
           width: 20px;
           height: 20px;
           background-image: $drop-down;
@@ -67,106 +81,130 @@ $cell-height: 6vh;
         }
       }
     }
-    .right-header-part{
+
+    .right-header-part {
       display: flex;
       width: 100%;
       flex-direction: column;
-      .calories-checker{
+
+      .calories-checker {
         display: grid;
         height: $cell-height;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: repeat(1, 1fr);
-        .calorie-intake{
+
+        .calorie-intake {
           display: flex;
           justify-content: center;
           align-items: center;
-          border: 1px solid green;
         }
-
       }
-      .days-wrapper{
+
+      .days-wrapper {
         display: grid;
         height: $cell-height;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: repeat(1, 1fr);
-        .days{
-          .day{
+
+          .day {
             display: flex;
-            justify-content: center;
+            align-items: center;
             white-space: pre-line;
-            border: 1px solid red;
+            flex-direction: column;
+            font-size: 14px;
+            line-height: 16px;
+            .date{
+              display: flex;
+              justify-content: center;
+              width: 16px;
+              height: 16px;
+              font-weight: bold;
+              margin-bottom: 3px;
+            }
+            .current-day{
+              border: 0 solid transparent;
+              border-radius: 50%;
+              background-color: #799CF4;
+            }
           }
-        }
       }
     }
   }
-  .body{
+
+  .body {
     margin-top: 100px;
     display: flex;
-    .left-body-part{
-      display: flex;
-      .time-wrapper{
-        display: grid;
-        flex-direction: column;
-        grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: repeat(15, 1fr);
-        width: 50px;
-        flex-shrink: 0;
-        margin: $cell-height / 4 0;
-          .time{
-            padding: 0 5px;
-            border-top: 1px solid transparent;
-          }
-      }
-      .vertical-layer{
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: repeat(15, 1fr);
-        flex-shrink: 0;
-        margin-top: $cell-height / 2;
-        width: 10px;
-        .cell-wrapper{
-          border-top: 1px solid blue;
-          div{
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            border-top: 1px solid blue;
-          }
+
+    .left-body-part {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      width: 60px;
+      margin: $cell-height / 4 0;
+      .time-wrapper {
+        display: flex;
+        align-items: center;
+        height: $cell-height / 2;
+
+        .time {
+          display: flex;
+          justify-content: center;
+          width: 50px;
+          border-top: 1px solid transparent;
+          color: #413F3F;
+          font-weight: 300;
+          font-size: 14px;
+          line-height: 16px;
+        }
+
+        .vertical-layer {
+          width: 10px;
+          border-top: 1px solid #D8D5D5;
         }
       }
     }
-    .right-body-part{
+
+    .right-body-part {
       display: flex;
       flex-direction: column;
       width: 100%;
-      .horizontal-layer{
+
+      .horizontal-layer {
         display: grid;
         width: 100%;
         height: $cell-height / 2;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: repeat(1, 1fr);
-        div{
-          border-left: 1px solid blue;
+
+        div {
+          border-left: 1px solid #D8D5D5;
         }
       }
-      .food-info-container{
+
+      .food-info-container {
         display: grid;
         width: 100%;
         grid-template-columns: repeat(7, 1fr);
-        grid-template-rows: repeat(15, 1fr);
+        grid-template-rows: repeat(17, 1fr);
 
-          .food-info {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            border-left: 1px solid blue;
-            border-top: 1px solid blue;
-          }
+        .food-info {
+          position: absolute;
+          margin: 2px;
+          padding: 2px;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+        }
+
+        .is-info {
+          background-color: #799CF4;
+          font-size: 12px;
+          line-height: 14px;
+          white-space: pre-line;
+          color: #FFFFFF;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }

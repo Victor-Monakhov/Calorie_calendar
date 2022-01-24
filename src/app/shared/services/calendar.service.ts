@@ -23,6 +23,13 @@ export class MealInfo {
     this.hours = infoData[3];
     this.time = this.hours + ':' + this.minutes;
   }
+  public updateKey(): void {
+    this.hours = this.time.split(':')[0];
+    this.minutes = this.time.split(':')[1];
+    let keyArr = this.key.split('|');
+    keyArr[3] = this.hours;
+    this.key = keyArr.join('|');
+  }
 }
 
 @Injectable({
@@ -32,36 +39,32 @@ export class CalendarService {
 
   public readonly weekDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   public readonly months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  public readonly times: string[] = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+  public readonly times: string[] =
+    ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00', '01:00', '02:00', '03:00', '04:00', '05:00'];
   public readonly mealsKey: string = 'meals';
   public readonly tempMealKey: string = 'tempMeal';
   public meal?: MealInfo;
   public meals: MealInfo[];
   public date: Date = new Date();
   public keys: string[] = [];
+  public totalCalories: number[] = [];
   public weekDaysNumbers: string[] = [];
 
   constructor() {
     for(let i = 0; i < this.times.length * this.weekDays.length; ++i){
       this.keys.push('');
     }
+    for(let i = 0; i < this.weekDays.length; ++i){
+      this.totalCalories.push(0);
+    }
     this.meal = JSON.parse(localStorage.getItem(this.tempMealKey) as string);
     this.meals = JSON.parse(localStorage.getItem(this.mealsKey) as string) ?? [];
   }
 
-  public timeToString(time: number): string{
-    if(time < 10){
-      return `0${time}`;
-    }
-    return time.toString();
-  }
-
   public updateKeys(date: Date): void{
-    let time = 8;
     const day = this.getWeekDay(date);
-    for(let i = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length){
-      this.keys[day + i] = `${date.getDate()}|${date.getMonth()}|${date.getFullYear()}| ${this.timeToString(time)}`;
-      ++time;
+    for(let i = 0, time = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length, ++time){
+      this.keys[day + i] = `${date.getDate()}|${date.getMonth()}|${date.getFullYear()}|${this.times[time].split(':')[0]}`;
     }
   }
 
@@ -86,7 +89,8 @@ export class CalendarService {
       this.date.setFullYear(constYear);
       this.date.setDate(constDate - toMonday + i);
       this.updateKeys(this.date);
-      this.weekDaysNumbers.push(`${this.date.getDate()}\n${item}`);
+      this.updateTotalCalories(this.date, i);
+      this.weekDaysNumbers.push(`${this.date.getDate()}`);
     });
     this.date.setFullYear(constYear);
     this.date.setMonth(constMonth);
@@ -97,11 +101,43 @@ export class CalendarService {
     this.meal = this.meals.find(item => item.key === info);
     if(!this.meal){
       this.meal = new MealInfo(info);
-      localStorage.setItem(this.tempMealKey, JSON.stringify(this.meal));
     }
+    localStorage.setItem(this.tempMealKey, JSON.stringify(this.meal));
   }
 
-  public removeTempMeal(){
+  public updateMeals(meal: MealInfo): void{
+    let isEdited: boolean = false;
+    for(let i = 0; i < this.meals.length; ++i){
+      if(this.meals[i].key === meal.key){
+        this.meals[i] = meal;
+        isEdited = true;
+        break;
+      }
+    }
+    if(!isEdited){
+      this.meals.push(meal);
+    }
+    localStorage.removeItem(this.mealsKey);
+    localStorage.setItem(this.mealsKey, JSON.stringify(this.meals));
+  }
+
+  public updateTotalCalories(date: Date, weekDay:number){
+    let caloriesPerDay: number = 0;
+    this.meals.forEach(item => {
+      if(item.day === date.getDate() &&
+          item.month === date.getMonth() &&
+          item.year === date.getFullYear()){
+        caloriesPerDay += +item.kcal;
+      }
+    });
+    this.totalCalories[weekDay] = caloriesPerDay;
+  }
+
+  public removeTempMeal(): void{
     localStorage.removeItem(this.tempMealKey);
+  }
+
+  public removeMeals(): void{
+    localStorage.removeItem(this.mealsKey);
   }
 }

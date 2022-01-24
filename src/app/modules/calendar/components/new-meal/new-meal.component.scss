@@ -2,6 +2,8 @@
   background-color: #FFFFFF;
   border: 0 solid transparent;
   margin: 9px 0 0 9px;
+  font-size: 18px;
+  line-height: 21px;
 }
 
 .wrapper {
@@ -11,12 +13,23 @@
     margin-bottom: 15px;
   }
   input{
-    border: 2px solid transparent;
-    border-bottom: 2px solid #000000;
+    border: 0 solid transparent;
     outline: none;
   }
+  input[type="image"]{
+    border: 1px solid #000000;
+    width: 298px;
+    height: 130px;
+    background-color: #EBEAEA;
+  }
+  hr{
+    height: 0;
+    border: 1px solid #000000;
+    width: 100%;
+    margin: 0;
+  }
   .invalid-input{
-    border-bottom: 2px solid #df4759;
+    border: 1px solid #df4759;
   }
 
   .title-wrapper {
@@ -31,7 +44,7 @@
   .form-wrapper {
     display: flex;
     flex-direction: column;
-    margin-top: 12px;
+    margin-top: 20px;
   }
 
   .kcal-time-wrapper {
@@ -41,6 +54,20 @@
     .form-wrapper,{
       margin-top: 0;
       width: 45%;
+    }
+  }
+  .add-meal-wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 21px;
+    .add-meal{
+      background-color: #799CF4;
+      border: 0 solid transparent;
+      color: #FFFFFF;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      height: 34px;
+      font-size: 20px;
+      line-height: 23px;
     }
   }
 }
