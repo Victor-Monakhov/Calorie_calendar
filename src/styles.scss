@@ -2,15 +2,55 @@
 body{
   padding: 0;
   margin: 0;
+  position: relative;
   font-family: Roboto-Regular, sans-serif;
   font-style: normal;
   font-weight: normal;
   input{
     font-size: 18px;
     line-height: 21px;
+    border: 0 solid transparent;
+    outline: none;
   }
   label{
     font-size: 16px;
     line-height: 19px;
+    margin-bottom: 15px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 33px;
+    font-weight: normal;
+  }
+  hr{
+    height: 0;
+    border: 1px solid #000000;
+    width: 100%;
+    margin: 0;
+  }
+
+  button {
+    background-color: #799CF4;
+    border: 0 solid transparent;
+    color: #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    height: 34px;
+    font-size: 20px;
+    line-height: 23px;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+  }
+
+  .cancel-btn {
+    background-color: #FFFFFF;
+    color: #000000;
+    margin: 9px 0 0 9px;
+    font-size: 18px;
+    line-height: 21px;
+    box-shadow: none;
+    padding: 0;
   }
 }

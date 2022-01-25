@@ -34,7 +34,9 @@
               "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["./src/assets/styles"]
+              "includePaths": [
+                "./src/assets/styles"
+              ]
             },
             "scripts": []
           },
@@ -106,9 +108,21 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "Calorie_calendar"
+  "defaultProject": "Calorie_calendar",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

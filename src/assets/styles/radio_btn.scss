@@ -1,17 +1,12 @@
 @import 'fonts.scss';
 @import 'variables.scss';
-label {
-  font-family: Roboto-Light, sans-serif;
+.radio-lbl {
+  font-family: Roboto-Regular, sans-serif;
   font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 28px;
-  :host-context(.light-theme) & {
-    color: $light_theme_font;
-  }
-  :host-context(.dark-theme) & {
-    color: $dark_theme_font;
-  }
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #000000;
   margin-left: 5px;
 }
 
@@ -30,14 +25,8 @@ input[type="radio"]::before {
   height: 16px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  :host-context(.light-theme) & {
-    background-color: $light_theme_panel_background;
-    border: 2px solid $light-theme_radio_border;
-  }
-  :host-context(.dark-theme) & {
-    background-color: $dark_theme_radio_background;
-    border-color: 2px solid $dark-theme_radio_border;
-  }
+  background-color: #FFFFFF;
+  border: 2px solid #000000;
 }
 
 input[type="radio"]:checked::after {
@@ -48,14 +37,8 @@ input[type="radio"]:checked::after {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  :host-context(.light-theme) & {
-    background-color: $light_theme_radio_background;
-    border: 2px solid $light-theme_radio_border_checked;
-  }
-  :host-context(.dark-theme) & {
-    background-color: $dark_theme_radio_background;
-    border: 2px solid $dark-theme_radio_border_checked;
-  }
+  background-color: #000000;
+  border: 2px solid #FFFFFF;
   transform: translate(-50%, -50%);
   visibility: visible;
 }

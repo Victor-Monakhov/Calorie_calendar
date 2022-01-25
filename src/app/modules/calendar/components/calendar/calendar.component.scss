@@ -46,8 +46,8 @@ $cell-height: 6vh;
       button {
         padding: 0;
         background-color: transparent;
-        border: 0 solid transparent;
-        cursor: pointer;
+        color: #000000;
+        box-shadow: none;
       }
 
       .settings {

@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit {
   public keys: string[];
   public weekDaysNumbers: string[];
   public totalCalories: number[];
-  public meals: MealInfo[];
+  public meals: MealInfo[] = [];
 
   constructor(public calendarService: CalendarService, public router: Router) {
     this.weekDays = this.calendarService.weekDays;
@@ -29,13 +29,14 @@ export class CalendarComponent implements OnInit {
     this.keys = this.calendarService.keys;
     this.weekDaysNumbers = this.calendarService.weekDaysNumbers;
     this.date = this.calendarService.date;
-    this.meals = this.calendarService.meals;
+    //this.meals = this.calendarService.meals;
     this.totalCalories = this.calendarService.totalCalories;
     this.currentDay =
       `${this.calendarService.date.getDate()}${this.calendarService.date.getMonth()}${this.calendarService.date.getFullYear()}`;
   }
 
   ngOnInit(): void {
+    this.calendarService.meals$.subscribe(meals => this.meals = meals);
     this.calendarService.updateState(this.deltaWeek);
   }
 
@@ -49,8 +50,8 @@ export class CalendarComponent implements OnInit {
   }
 
   public onFood(info: string){
-    this.calendarService.loadMeal(info);
-    this.router.navigate(['/meal']);
+    //this.calendarService.loadMeal(info);
+      this.router.navigate(['/meal'], {queryParams: {key: info}});
   }
 
   public onSettings(){

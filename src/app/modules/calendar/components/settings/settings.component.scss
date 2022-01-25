@@ -1,0 +1,67 @@
+@import 'radio_btn.scss';
+
+.wrapper {
+  padding: 0 80px 0 36px;
+
+  hr {
+    height: 0;
+    border: 1px solid #000000;
+    width: 100%;
+    margin: 0;
+  }
+
+  .invalid-input {
+    border: 1px solid #df4759;
+  }
+
+  .title-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-left: 44px;
+  }
+
+  .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    p {
+      font-size: 16px;
+      line-height: 19px;
+      margin: 0;
+    }
+  }
+
+  .gender-age-wrapper{
+    display: flex;
+    .male-female {
+      display: flex;
+      margin-top: 12px;
+
+      .radio {
+        margin-top: 0;
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .calculate-btn-wrapper {
+    margin-top: 20px;
+  }
+
+  .min-max-kcal-wrapper {
+    display: flex;
+    margin-top: 23px;
+    justify-content: space-between;
+
+    .form-wrapper, {
+      margin-top: 0;
+      width: 45%;
+    }
+  }
+}
+.save-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}

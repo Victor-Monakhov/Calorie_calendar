@@ -8,8 +8,8 @@
     <input class="form-control"
            type="text"
            id="name"
-           formControlName="title">
-    <hr [ngClass]="{'invalid-input' : form.get('title')?.invalid}">
+           formControlName="name">
+    <hr [ngClass]="{'invalid-input' : form.get('name')?.invalid}">
   </div>
   <div class="kcal-time-wrapper">
     <div class="form-wrapper">
@@ -17,18 +17,16 @@
       <input class="form-control"
              type="text"
              id="kcal"
-             formControlName="kcal"
-             required minlength="1" maxlength="4" pattern="[0-9]*">
-<!--      <hr [ngClass]="{'invalid-input' : kcal.invalid}">-->
+             formControlName="kcal">
+      <hr [ngClass]="{'invalid-input' : form.get('kcal')?.invalid}">
     </div>
     <div class="form-wrapper">
       <label for="time">Time</label>
       <input class="form-control"
              type="text"
              id="time"
-             formControlName="time"
-             required minlength="5" maxlength="5" pattern="(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]">
-<!--      <hr [ngClass]="{'invalid-input' : time.invalid}">-->
+             formControlName="time">
+      <hr [ngClass]="{'invalid-input' : form.get('time')?.invalid}">
     </div>
   </div>
   <div class="form-wrapper">
@@ -36,39 +34,34 @@
     <input class="form-control"
            type="text"
            id="fats"
-           formControlName="fats"
-           required minlength="1" maxlength="4" pattern="[0-9]*">
-<!--    <hr [ngClass]="{'invalid-input' : fats.invalid}">-->
+           formControlName="fats">
+    <hr [ngClass]="{'invalid-input' : form.get('fats')?.invalid}">
   </div>
   <div class="form-wrapper">
     <label for="proteins">Proteins (gm)</label>
     <input class="form-control"
            type="text"
            id="proteins"
-           formControlName="proteins"
-           required minlength="1" maxlength="4" pattern="[0-9]*">
-<!--    <hr [ngClass]="{'invalid-input' : proteins.invalid}">-->
+           formControlName="proteins">
+    <hr [ngClass]="{'invalid-input' : form.get('proteins')?.invalid}">
   </div>
   <div class="form-wrapper">
     <label for="carbohydrates">Carbohydrates (gm)</label>
     <input class="form-control"
            type="text"
            id="carbohydrates"
-           formControlName="carbohydrates"
-           required minlength="1" maxlength="4" pattern="[0-9]*">
-<!--    <hr [ngClass]="{'invalid-input' : carbohydrates.invalid}">-->
+           formControlName="carbohydrates">
+    <hr [ngClass]="{'invalid-input' : form.get('carbohydrates')?.invalid}">
   </div>
   <div class="form-wrapper">
     <label for="photo">Add photo</label>
     <input type="image" id="photo" src="" alt="meal-image">
   </div>
-  <div class="add-meal-wrapper">
-    <button class="add-meal"
-            [disabled]="form.invalid"
-            (click)="onAddMeal()">
-      Add meal
-    </button>
-  </div>
-
+</div>
+<div class="add-meal-wrapper">
+  <button [disabled]="form.invalid"
+          (click)="onAddMeal()">
+    Add meal
+  </button>
 </div>
 
