@@ -5,12 +5,14 @@ import {CalendarRoutingModule} from "./calendar-routing.module";
 import { NewMealComponent } from './components/new-meal/new-meal.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { SettingsComponent } from './components/settings/settings.component';
+import {MealPipe} from "../../shared/pipes/meal.pipe";
 
 @NgModule({
   declarations: [
     CalendarComponent,
     NewMealComponent,
-    SettingsComponent
+    SettingsComponent,
+    MealPipe
   ],
     imports: [
         CommonModule,
@@ -18,5 +20,8 @@ import { SettingsComponent } from './components/settings/settings.component';
         FormsModule,
         ReactiveFormsModule,
     ],
+  exports: [
+    MealPipe
+  ],
 })
 export class CalendarModule { }

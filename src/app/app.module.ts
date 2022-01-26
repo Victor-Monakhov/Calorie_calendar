@@ -13,20 +13,20 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HammerModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects])
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HammerModule,
+        StoreModule.forRoot(reducers, {
+            metaReducers
+        }),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+        EffectsModule.forRoot([AppEffects])
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

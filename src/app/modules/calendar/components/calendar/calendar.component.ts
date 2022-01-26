@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CalendarService, MealInfo} from "../../../../shared/services/calendar.service";
+import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Router} from "@angular/router";
+import {MealInfo} from "../../../../shared/classes/meal-info";
+import {BehaviorSubject} from "rxjs";
 
 
 @Component({
@@ -20,7 +22,6 @@ export class CalendarComponent implements OnInit {
   public keys: string[];
   public weekDaysNumbers: string[];
   public totalCalories: number[];
-  public meals: MealInfo[] = [];
 
   constructor(public calendarService: CalendarService, public router: Router) {
     this.weekDays = this.calendarService.weekDays;
@@ -29,14 +30,12 @@ export class CalendarComponent implements OnInit {
     this.keys = this.calendarService.keys;
     this.weekDaysNumbers = this.calendarService.weekDaysNumbers;
     this.date = this.calendarService.date;
-    //this.meals = this.calendarService.meals;
     this.totalCalories = this.calendarService.totalCalories;
     this.currentDay =
       `${this.calendarService.date.getDate()}${this.calendarService.date.getMonth()}${this.calendarService.date.getFullYear()}`;
   }
 
   ngOnInit(): void {
-    this.calendarService.meals$.subscribe(meals => this.meals = meals);
     this.calendarService.updateState(this.deltaWeek);
   }
 
@@ -50,27 +49,10 @@ export class CalendarComponent implements OnInit {
   }
 
   public onFood(info: string){
-    //this.calendarService.loadMeal(info);
       this.router.navigate(['/meal'], {queryParams: {key: info}});
   }
 
   public onSettings(){
     this.router.navigate(['/settings']);
-  }
-
-  public getMeal(key: string): string{
-    const meal = this.meals.find(item => item.key === key);
-    if(meal){
-      if(+meal.hours < 12){
-        return this.mealInfo = `Breakfast\n${meal.name}\n${meal.kcal}`;
-      }
-      if(+meal.hours >= 12 && +meal.hours <= 17){
-        return this.mealInfo = `Dinner\n${meal.name}\n${meal.kcal}`;
-      }
-      if(+meal.hours > 17){
-        return this.mealInfo = `Supper\n${meal.name}\n${meal.kcal}`;
-      }
-    }
-    return this.mealInfo = '';
   }
 }

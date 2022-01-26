@@ -49,6 +49,30 @@ $vollkorn: '../fonts/vollkorn';
     src: url($roboto + '/Roboto-ThinItalic.ttf');
 }
 @font-face{
+  font-family: RobotoCondensed-Bold;
+  src: url($roboto + '/RobotoCondensed-Bold.ttf');
+}
+@font-face{
+  font-family: RobotoCondensed-BoldItalic;
+  src: url($roboto + '/RobotoCondensed-BoldItalic.ttf');
+}
+@font-face{
+  font-family: RobotoCondensed-Italic;
+  src: url($roboto + '/RobotoCondensed-Italic.ttf');
+}
+@font-face{
+  font-family: RobotoCondensed-Light;
+  src: url($roboto + '/RobotoCondensed-Light.ttf');
+}
+@font-face{
+  font-family: RobotoCondensed-LightItalic;
+  src: url($roboto + '/RobotoCondensed-LightItalic.ttf');
+}
+@font-face{
+  font-family: RobotoCondensed-Regular;
+  src: url($roboto + '/RobotoCondensed-Regular.ttf');
+}
+@font-face{
   font-family: WaitingfortheSunrise-Regular;
   src: url('../fonts/w_f_sunrise/WaitingfortheSunrise-Regular.ttf');
 }

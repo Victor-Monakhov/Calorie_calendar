@@ -11,28 +11,26 @@
           <input class="form-control"
                  type="radio"
                  id="male"
-                 formControlName="male"
-                 [checked]="radioValue === 'male'"
-                 (click)="onGender('male')">
+                 formControlName="gender"
+                 value="male">
           <label class="radio-lbl" for="male">Male</label>
         </div>
         <div class="radio">
           <input class="form-control"
                  type="radio"
                  id="female"
-                 formControlName="female"
-                 [checked]="radioValue === 'female'"
-                 (click)="onGender('female')">
+                 formControlName="gender"
+                 value="female">
           <label class="radio-lbl" for="female">Female</label>
         </div>
       </div>
     </div>
     <div class="form-wrapper">
       <label for="age">Age (years)</label>
-      <input class="form-control"
-             type="text"
-             id="age"
-             formControlName="age">
+        <input class="form-control"
+               type="text"
+               id="age"
+               formControlName="age">
       <hr [ngClass]="{'invalid-input' : form.get('age')?.invalid}">
     </div>
   </div>
@@ -53,7 +51,7 @@
     <hr [ngClass]="{'invalid-input' : form.get('height')?.invalid}">
   </div>
   <div class="calculate-btn-wrapper">
-    <button>Calculate rate for day</button>
+    <button (click)="onCalculate()">Calculate rate for day</button>
   </div>
   <div class="min-max-kcal-wrapper">
     <div class="form-wrapper">

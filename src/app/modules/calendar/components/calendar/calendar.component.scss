@@ -22,6 +22,7 @@ $cell-height: 6vh;
     padding-top: 100%;
     border-left: 1px solid #D8D5D5;
     border-top: 1px solid #D8D5D5;
+
     span {
       display: none;
     }
@@ -106,27 +107,29 @@ $cell-height: 6vh;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: repeat(1, 1fr);
 
-          .day {
+        .day {
+          display: flex;
+          align-items: center;
+          white-space: pre-line;
+          flex-direction: column;
+          font-size: 14px;
+          line-height: 16px;
+
+          .date {
             display: flex;
-            align-items: center;
-            white-space: pre-line;
-            flex-direction: column;
-            font-size: 14px;
-            line-height: 16px;
-            .date{
-              display: flex;
-              justify-content: center;
-              width: 16px;
-              height: 16px;
-              font-weight: bold;
-              margin-bottom: 3px;
-            }
-            .current-day{
-              border: 0 solid transparent;
-              border-radius: 50%;
-              background-color: #799CF4;
-            }
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            font-weight: bold;
+            margin-bottom: 3px;
           }
+
+          .current-day {
+            border: 0 solid transparent;
+            border-radius: 50%;
+            background-color: #799CF4;
+          }
+        }
       }
     }
   }
@@ -140,6 +143,7 @@ $cell-height: 6vh;
       grid-template-columns: repeat(1, 1fr);
       width: 60px;
       margin: $cell-height / 4 0;
+
       .time-wrapper {
         display: flex;
         align-items: center;
@@ -188,22 +192,37 @@ $cell-height: 6vh;
 
         .food-info {
           position: absolute;
-          margin: 2px;
-          padding: 2px;
           top: 0;
           right: 0;
           bottom: 0;
           left: 0;
-        }
-
-        .is-info {
-          background-color: #799CF4;
-          font-size: 12px;
-          line-height: 14px;
-          white-space: pre-line;
-          color: #FFFFFF;
           overflow: hidden;
-          text-overflow: ellipsis;
+          margin: 1px;
+
+          .is-info {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 2px;
+            background-color: #799CF4;
+
+            p {
+              font-size: 12px;
+              line-height: 14px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              color: #FFFFFF;
+            }
+            .bold{
+              font-weight: bold;
+            }
+          }
         }
       }
     }

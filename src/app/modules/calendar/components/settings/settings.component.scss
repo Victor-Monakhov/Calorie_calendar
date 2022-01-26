@@ -3,13 +3,6 @@
 .wrapper {
   padding: 0 80px 0 36px;
 
-  hr {
-    height: 0;
-    border: 1px solid #000000;
-    width: 100%;
-    margin: 0;
-  }
-
   .invalid-input {
     border: 1px solid #df4759;
   }
@@ -23,7 +16,7 @@
   .form-wrapper {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 21px;
 
     p {
       font-size: 16px;
@@ -32,8 +25,11 @@
     }
   }
 
-  .gender-age-wrapper{
+  .gender-age-wrapper {
     display: flex;
+    overflow: hidden;
+    flex-shrink: 0;
+
     .male-female {
       display: flex;
       margin-top: 12px;
@@ -41,7 +37,12 @@
       .radio {
         margin-top: 0;
         margin-right: 20px;
+        white-space: nowrap;
       }
+    }
+
+    #age {
+      width: 98%;
     }
   }
 
@@ -60,6 +61,7 @@
     }
   }
 }
+
 .save-wrapper {
   display: flex;
   justify-content: center;

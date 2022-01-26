@@ -39,12 +39,16 @@
         <div *ngFor="let i of weekDays"></div>
       </div>
       <div class="food-info-container" [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">
-        <div class="cell-wrapper" *ngFor="let key of keys;">
-          <span>{{getMeal(key)}}</span>
-          <div class="food-info"
-               [ngClass]="{'is-info' : mealInfo}"
-               (click)="onFood(key)">
-            {{mealInfo}}
+        <div class="cell-wrapper"
+             *ngFor="let key of keys">
+          <div class="food-info" (click)="onFood(key)">
+            <div class="is-info" *ngIf="key | meal as item">
+              <div>
+                <p>{{item.type}}</p>
+                <p>{{item.name}}</p>
+              </div>
+              <p class="bold">{{item.kcal}}</p>
+            </div>
           </div>
         </div>
       </div>
