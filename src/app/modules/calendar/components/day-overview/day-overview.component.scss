@@ -1,0 +1,53 @@
+.title-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  padding: 0 158px 0 36px;
+
+  .item-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 27px;
+    p{
+      margin: 0;
+    }
+    .p-info{
+      font-size: 18px;
+      line-height: 21px;
+    }
+    .p-label{
+      font-size: 16px;
+      line-height: 19px;
+      margin-bottom: 14px;
+    }
+  }
+  .meal-container{
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+    background-color: #799CF4;
+    height: 50px;
+    padding: 5px;
+    p{
+      margin: 0;
+      color: #FFFFFF;
+      font-size: 14px;
+      line-height: 16px;
+      height: 100%;
+    }
+    div{
+      display: flex;
+      justify-content: space-between;
+      .bold{
+        font-weight: bold;
+      }
+    }
+  }
+}
+.edit-meal-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 21px;
+}

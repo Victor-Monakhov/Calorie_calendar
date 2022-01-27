@@ -1,15 +1,16 @@
 <button class="cancel-btn" (click)="onCancel()">Cancel</button>
 <div class="wrapper" [formGroup]="form">
   <div class="title-wrapper">
-    <h1>New meal</h1>
+    <h1>{{mode === 'edit' ? 'Edit meal' : 'New meal'}}</h1>
   </div>
   <div class="form-wrapper">
     <label for="name">Title</label>
     <input class="form-control"
            type="text"
            id="name"
-           formControlName="name">
-    <hr [ngClass]="{'invalid-input' : form.get('name')?.invalid}">
+           formControlName="name"
+           placeholder="enter meal name">
+    <hr [ngClass]="{'invalid-input' : form.get('name')?.invalid && form.get('name')?.touched}">
   </div>
   <div class="kcal-time-wrapper">
     <div class="form-wrapper">
@@ -17,8 +18,9 @@
       <input class="form-control"
              type="text"
              id="kcal"
-             formControlName="kcal">
-      <hr [ngClass]="{'invalid-input' : form.get('kcal')?.invalid}">
+             formControlName="kcal"
+             placeholder="1234">
+      <hr [ngClass]="{'invalid-input' : form.get('kcal')?.invalid && form.get('kcal')?.touched}">
     </div>
     <div class="form-wrapper">
       <label for="time">Time</label>
@@ -34,24 +36,27 @@
     <input class="form-control"
            type="text"
            id="fats"
-           formControlName="fats">
-    <hr [ngClass]="{'invalid-input' : form.get('fats')?.invalid}">
+           formControlName="fats"
+           placeholder="123">
+    <hr [ngClass]="{'invalid-input' : form.get('fats')?.invalid && form.get('fats')?.touched}">
   </div>
   <div class="form-wrapper">
     <label for="proteins">Proteins (gm)</label>
     <input class="form-control"
            type="text"
            id="proteins"
-           formControlName="proteins">
-    <hr [ngClass]="{'invalid-input' : form.get('proteins')?.invalid}">
+           formControlName="proteins"
+           placeholder="123">
+    <hr [ngClass]="{'invalid-input' : form.get('proteins')?.invalid && form.get('proteins')?.touched}">
   </div>
   <div class="form-wrapper">
     <label for="carbohydrates">Carbohydrates (gm)</label>
     <input class="form-control"
            type="text"
            id="carbohydrates"
-           formControlName="carbohydrates">
-    <hr [ngClass]="{'invalid-input' : form.get('carbohydrates')?.invalid}">
+           formControlName="carbohydrates"
+           placeholder="123">
+    <hr [ngClass]="{'invalid-input' : form.get('carbohydrates')?.invalid && form.get('carbohydrates')?.touched}">
   </div>
   <div class="form-wrapper">
     <label for="photo">Add photo</label>
@@ -61,7 +66,7 @@
 <div class="add-meal-wrapper">
   <button [disabled]="form.invalid"
           (click)="onAddMeal()">
-    Add meal
+    {{mode === mode ? 'Edit meal' : 'Add meal'}}
   </button>
 </div>
 

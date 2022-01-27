@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Router} from "@angular/router";
-import {MealInfo} from "../../../../shared/classes/meal-info";
-import {BehaviorSubject} from "rxjs";
+import {TotalCalories} from "../../../../shared/models/total-calories";
 
 
 @Component({
@@ -13,26 +12,23 @@ import {BehaviorSubject} from "rxjs";
 export class CalendarComponent implements OnInit {
 
   public deltaWeek: number = 0;
-  public currentDay: string;
   public date: Date;
+  public currentDate: Date;
   public mealInfo?: string;
   public weekDays: string[];
   public months: string[];
   public times: string[];
   public keys: string[];
-  public weekDaysNumbers: string[];
-  public totalCalories: number[];
+  public totalCalories: TotalCalories[];
 
   constructor(public calendarService: CalendarService, public router: Router) {
     this.weekDays = this.calendarService.weekDays;
     this.months = this.calendarService.months;
     this.times = this.calendarService.times;
     this.keys = this.calendarService.keys;
-    this.weekDaysNumbers = this.calendarService.weekDaysNumbers;
     this.date = this.calendarService.date;
     this.totalCalories = this.calendarService.totalCalories;
-    this.currentDay =
-      `${this.calendarService.date.getDate()}${this.calendarService.date.getMonth()}${this.calendarService.date.getFullYear()}`;
+    this.currentDate = this.calendarService.currentDay;
   }
 
   ngOnInit(): void {
@@ -54,5 +50,22 @@ export class CalendarComponent implements OnInit {
 
   public onSettings(){
     this.router.navigate(['/settings']);
+  }
+
+  public onTodayMeal(){
+    this.router.navigate(['/meal'],
+     {queryParams: {key: this.calendarService.createKey(this.currentDate, '06:00'), mode: 'create'}});
+  }
+
+  public onDay(kcalAmount: number, day: string, month: string, year: string){
+    if(kcalAmount > 0) {
+      this.router.navigate(['/day-overview'], {queryParams: {'day': day, 'month': month, 'year': year}});
+    }
+  }
+
+  public checkCurrentDay(day: string): boolean{
+    const dynamicDate = `${day}${this.date.getMonth()}${this.date.getFullYear()}`;
+    const currentDate = `${this.currentDate.getDate()}${this.currentDate.getMonth()}${this.currentDate.getFullYear()}`
+    return dynamicDate === currentDate;
   }
 }

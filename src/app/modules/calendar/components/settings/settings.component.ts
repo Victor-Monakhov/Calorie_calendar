@@ -30,7 +30,6 @@ export class SettingsComponent implements OnInit {
     proteins: [142, [Validators.min(10), Validators.max(1000), Validators.pattern('[0-9]*')]],
     carbohydrates: [142, [Validators.min(10), Validators.max(1000), Validators.pattern('[0-9]*')]]
   });
-  //public radioValue: string = 'male';
 
   constructor(private fb: FormBuilder, private router: Router, private calenderService: CalendarService) {}
 
@@ -46,7 +45,6 @@ export class SettingsComponent implements OnInit {
       proteins: this.calenderService.userSettings.proteins,
       carbohydrates: this.calenderService.userSettings.carbohydrates
       });
-   //this.radioValue = this.calenderService.userSettings.gender;
   }
 
   public onCancel(){
@@ -54,7 +52,8 @@ export class SettingsComponent implements OnInit {
   }
 
   public onSave(){
-
+    this.calenderService.updateUserSettings(this.form);
+    this.router.navigate(['/']);
   }
 
   public onCalculate(){

@@ -1,6 +1,7 @@
 <div class="wrapper"
      (swipeleft)="onSwipeLeft()"
      (swiperight)="onSwipeRight()">
+  <button class="add-today-meal" (click)="onTodayMeal()"></button>
   <div class="header">
     <div class="left-header-part">
       <button class="settings" (click)="onSettings()"></button>
@@ -9,17 +10,21 @@
         <div class="drop-down"></div>
       </button>
     </div>
-    <div class="right-header-part">
+    <div class="right-header-part" >
       <div class="calories-checker">
-        <div class="calorie-intake" *ngFor="let calories of totalCalories">
-          {{calories === 0 ? '' : calories}}
+        <div class="calorie-intake"
+             *ngFor="let calories of totalCalories;"
+             (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
+          <p [class]="calories.status">{{calories.amount === 0 ? '' : calories.amount}}</p>
         </div>
       </div>
       <div class="days-wrapper">
-        <div class="day" *ngFor="let day of weekDaysNumbers; let i = index">
+        <div class="day"
+             *ngFor="let calories of totalCalories; let i = index"
+             (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
           <p class="date"
-            [ngClass]="{'current-day': day + date.getMonth() + date.getFullYear() === currentDay}">
-            {{day}}
+            [ngClass]="{'current-day': checkCurrentDay(calories.day)}">
+            {{calories.day}}
           </p>
           <p>{{weekDays[i]}}</p>
         </div>

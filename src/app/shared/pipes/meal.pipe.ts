@@ -21,14 +21,14 @@ export class MealPipe implements PipeTransform {
       }
       if(+meal.hours >= 12 && +meal.hours <= 17){
         return {
-          type: 'Dinner',
+          type: 'Lunch',
           name: meal.name,
           kcal: meal.kcal
         } as ShortMealInfo;
       }
       if(+meal.hours > 17){
         return {
-          type: 'Supper',
+          type: 'Dinner',
           name: meal.name,
           kcal: meal.kcal
         } as ShortMealInfo;

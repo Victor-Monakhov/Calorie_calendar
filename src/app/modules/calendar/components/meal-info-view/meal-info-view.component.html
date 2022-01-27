@@ -1,0 +1,36 @@
+<button class="cancel-btn" (click)="onCancel()">Back</button>
+<div class="wrapper">
+  <div class="title-wrapper">
+    <h1>{{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
+      (+meal.hours > 16) ? 'Dinner ' + meal.name :
+      'Lunch ' + meal.name}}</h1>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Time</p>
+    <p class="p-info">{{meal.time}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Kcal</p>
+    <p class="p-info">{{meal.kcal}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Fats (gm)</p>
+    <p class="p-info">{{meal.fats}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Proteins (gm)</p>
+    <p class="p-info">{{meal.proteins}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Carbohydrates (gm)</p>
+    <p class="p-info">{{meal.carbohydrates}}</p>
+  </div>
+  <div class="image-wrapper">
+    <img src="" alt="meal image">
+  </div>
+</div>
+<div class="edit-meal-wrapper">
+  <button (click)="onEditMeal()">
+    Edit meal
+  </button>
+</div>

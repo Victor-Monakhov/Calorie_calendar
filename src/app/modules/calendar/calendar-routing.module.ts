@@ -4,6 +4,8 @@ import {CalendarComponent} from "./components/calendar/calendar.component";
 import {CommonModule} from "@angular/common";
 import {NewMealComponent} from "./components/new-meal/new-meal.component";
 import {SettingsComponent} from "./components/settings/settings.component";
+import {MealInfoViewComponent} from "./components/meal-info-view/meal-info-view.component";
+import {DayOverviewComponent} from "./components/day-overview/day-overview.component";
 
 const routes: Routes = [
   {
@@ -17,6 +19,14 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent
+  },
+  {
+    path: 'meal-info-view',
+    component: MealInfoViewComponent
+  },
+  {
+    path: 'day-overview',
+    component: DayOverviewComponent
   }
 ];
 

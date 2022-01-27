@@ -1,0 +1,31 @@
+<button class="cancel-btn" (click)="onCancel()">Back</button>
+<div class="title-wrapper">
+  <h1>{{(isCurrentDay) ? 'Today' : months[month] + ' ' + day}}</h1>
+</div>
+<div class="wrapper">
+  <div class="item-wrapper">
+    <p class="p-label">Kcal</p>
+    <p class="p-info">{{totalCalories?.amount + ' / ' + userSettings?.maxKcal}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Fats (gm)</p>
+    <p class="p-info">{{totalCalories?.fats + ' / ' + userSettings?.fats}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Proteins (gm)</p>
+    <p class="p-info">{{totalCalories?.proteins + ' / ' + userSettings?.proteins}}</p>
+  </div>
+  <div class="item-wrapper">
+    <p class="p-label">Carbohydrates (gm)</p>
+    <p class="p-info">{{totalCalories?.carbohydrates + ' / ' + userSettings?.carbohydrates}}</p>
+  </div>
+  <div class="meal-container" *ngFor="let meal of meals">
+    <p>{{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
+      (+meal.hours > 16) ? 'Dinner ' + meal.name :
+        'Lunch ' + meal.name}}</p>
+    <div>
+      <p class="bold">{{meal.kcal}}</p>
+      <p class="bold">{{meal.time}}</p>
+    </div>
+  </div>
+</div>
