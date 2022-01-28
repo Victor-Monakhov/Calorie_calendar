@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AbstractControl} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 import {MealInfo} from "../classes/meal-info";
@@ -21,79 +21,68 @@ export class CalendarService {
   public userSettings: UserSettings;
   public meals$: BehaviorSubject<MealInfo[]> = new BehaviorSubject<MealInfo[]>([]);
   public date: Date = new Date();
+  public currentDay: Date = new Date();
   public keys: string[] = [];
   public totalCalories: TotalCalories[] = [];
-  public currentDay: Date = new Date();
 
   constructor() {
-    for(let i = 0; i < this.times.length * this.weekDays.length; ++i){
+    for (let i = 0; i < this.times.length * this.weekDays.length; ++i) {
       this.keys.push('');
     }
     const totalCalories = JSON.parse(localStorage.getItem(this.caloriesKey) as string) ?? new TotalCalories();
-    for(let i = 0; i < this.weekDays.length; ++i){
+    for (let i = 0; i < this.weekDays.length; ++i) {
       this.totalCalories.push(new TotalCalories());
       Object.assign(this.totalCalories[i], totalCalories[i]);
     }
     this.userSettings = JSON.parse(localStorage.getItem(this.settingsKey) as string) ?? new UserSettings();
-    this.meals$.next(JSON.parse(localStorage.getItem(this.mealsKey) as string) ?? []) ;
+    this.meals$.next(JSON.parse(localStorage.getItem(this.mealsKey) as string) ?? []);
   }
 
-  public createKey(date: Date, time: string): string{
-    return `${date.getDate()}|${date.getMonth()}|${date.getFullYear()}|${time.split(':')[0]}`
-  }
-
-  private keysInit(date: Date, weekDay: number){
-    for(let i = 0, time = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length, ++time){
+  private keysInit(date: Date, weekDay: number) {
+    for (let i = 0, time = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length, ++time) {
       this.keys[weekDay + i] = this.createKey(date, this.times[time]);
     }
   }
 
-  private getWeekDay(date: Date): number{
+  private getWeekDay(date: Date): number {
     let day: number = date.getDay() - 1;
-    if(day === -1){
+    if (day === -1) {
       day = 6;
     }
     return day;
   }
 
-  private updateDayState(date: Date, weekDay:number): void{
+  private updateDayState(date: Date, weekDay: number): void {
     this.keysInit(date, weekDay);
-    let caloriesPerDay: number = 0;
-    let fatsPerDay: number = 0;
-    let proteinsPerDay: number = 0;
+    const totalKcal = this.totalCalories[weekDay];
+    let calories: number = 0;
+    let fats: number = 0;
+    let proteins: number = 0;
     let carbohydratesPerDay: number = 0;
     this.meals$.value.forEach(item => {
-      if(item.day === date.getDate() &&
+      if (item.day === date.getDate() &&
         item.month === date.getMonth() &&
-        item.year === date.getFullYear()){
-        caloriesPerDay += +item.kcal;
-        fatsPerDay += +item.fats;
-        proteinsPerDay += +item.proteins;
+        item.year === date.getFullYear()) {
+        calories += +item.kcal;
+        fats += +item.fats;
+        proteins += +item.proteins;
         carbohydratesPerDay += +item.carbohydrates;
       }
     });
-    this.totalCalories[weekDay].amount = caloriesPerDay;
-    this.totalCalories[weekDay].fats = fatsPerDay;
-    this.totalCalories[weekDay].proteins = proteinsPerDay;
-    this.totalCalories[weekDay].carbohydrates = carbohydratesPerDay;
-    this.totalCalories[weekDay].status = this.totalCalories[weekDay].getStatus(
-      this.userSettings.minKcal, this.userSettings.maxKcal, this.totalCalories[weekDay].amount
-    );
-    this.totalCalories[weekDay].fatsStatus = this.totalCalories[weekDay].getStatus(
-      this.userSettings.fats, this.userSettings.fats, this.totalCalories[weekDay].fats
-    );
-    this.totalCalories[weekDay].proteinsStatus = this.totalCalories[weekDay].getStatus(
-      this.userSettings.proteins, this.userSettings.proteins, this.totalCalories[weekDay].proteins
-    );
-    this.totalCalories[weekDay].carbohydratesStatus = this.totalCalories[weekDay].getStatus(
-      this.userSettings.carbohydrates, this.userSettings.carbohydrates, this.totalCalories[weekDay].carbohydrates
-    );
-    this.totalCalories[weekDay].day = `${date.getDate()}`;
-    this.totalCalories[weekDay].month = `${date.getMonth()}`;
-    this.totalCalories[weekDay].year = `${date.getFullYear()}`;
+    totalKcal.day = `${date.getDate()}`;
+    totalKcal.month = `${date.getMonth()}`;
+    totalKcal.year = `${date.getFullYear()}`;
+    totalKcal.amount = calories;
+    totalKcal.fats = fats;
+    totalKcal.proteins = proteins;
+    totalKcal.carbohydrates = carbohydratesPerDay;
+    totalKcal.status = totalKcal.getStatus(this.userSettings.minKcal, this.userSettings.maxKcal, totalKcal.amount);
+    totalKcal.fatsStatus = totalKcal.getStatus(this.userSettings.fats, this.userSettings.fats, totalKcal.fats);
+    totalKcal.proteinsStatus = totalKcal.getStatus(this.userSettings.proteins, this.userSettings.proteins, totalKcal.proteins);
+    totalKcal.carbohydratesStatus = totalKcal.getStatus(this.userSettings.carbohydrates, this.userSettings.carbohydrates, totalKcal.carbohydrates);
   }
 
-  public updateState(deltaWeek: number): void{
+  public updateState(deltaWeek: number): void {
     this.date.setDate(this.date.getDate() + deltaWeek);
     const constDate: number = this.date.getDate();
     const constMonth: number = this.date.getMonth();
@@ -113,19 +102,19 @@ export class CalendarService {
     localStorage.setItem(this.caloriesKey, JSON.stringify(this.totalCalories));
   }
 
-  public updateMeals(meal: MealInfo, form: AbstractControl): void{
+  public updateMeals(meal: MealInfo, form: AbstractControl): void {
     Object.assign(meal, form.value);
     this.updateKey(meal);
     let isEdited: boolean = false;
     const meals = JSON.parse(localStorage.getItem(this.mealsKey) as string) ?? [];
-    for(let i = 0; i < meals.length; ++i){
-      if(meals[i].key === meal.key){
+    for (let i = 0; i < meals.length; ++i) {
+      if (meals[i].key === meal.key) {
         meals[i] = meal;
         isEdited = true;
         break;
       }
     }
-    if(!isEdited){
+    if (!isEdited) {
       meals.push(meal);
     }
     this.meals$.next(meals);
@@ -133,10 +122,15 @@ export class CalendarService {
     localStorage.setItem(this.mealsKey, JSON.stringify(this.meals$.value));
   }
 
-  public getMealByKey(key: string): MealInfo | undefined{
+  public createKey(date: Date, time: string): string {
+    return `${date.getDate()}|${date.getMonth()}|${date.getFullYear()}|${time.split(':')[0]}`
+  }
+
+  public getMealByKey(key: string): MealInfo | undefined {
     return this.meals$.value.find(item => item.key === key);
   }
-  public getTotalCalories(day: number, month: number, year: number): TotalCalories | undefined{
+
+  public getTotalCalories(day: number, month: number, year: number): TotalCalories | undefined {
     return this.totalCalories.find(totalCalories => {
       return +totalCalories.day === day &&
         +totalCalories.month === month &&
@@ -145,28 +139,28 @@ export class CalendarService {
   }
 
   public updateKey(meal: MealInfo): void {
-      meal.hours = meal.time.split(':')[0];
-      meal.minutes = meal.time.split(':')[1];
-      let keyArr = meal.key.split('|');
-      keyArr[3] = meal.hours;
-      meal.key = keyArr.join('|');
+    meal.hours = meal.time.split(':')[0];
+    meal.minutes = meal.time.split(':')[1];
+    let keyArr = meal.key.split('|');
+    keyArr[3] = meal.hours;
+    meal.key = keyArr.join('|');
   }
 
-  public updateUserSettings(form: AbstractControl): void{
+  public updateUserSettings(form: AbstractControl): void {
     Object.assign(this.userSettings, form.value);
     localStorage.removeItem(this.settingsKey);
     localStorage.setItem(this.settingsKey, JSON.stringify(this.userSettings));
   }
 
-  public getMealsPerDey(day: number, month: number, year: number): MealInfo[]{
+  public getMealsPerDey(day: number, month: number, year: number): MealInfo[] {
     return this.meals$.value.filter(meal => {
-      return  meal.day === day &&
+      return meal.day === day &&
         meal.month === month &&
         meal.year === year;
     });
   }
 
-  public removeMeals(): void{
+  public removeMeals(): void {
     localStorage.removeItem(this.mealsKey);
   }
 }

@@ -1,4 +1,27 @@
 @import 'radio_btn.scss';
+@import "icons.scss";
+
+.navigation-wrapper {
+  margin: 6px 9px 0 9px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 26px;
+
+  .cancel-btn {
+    padding: 0;
+    height: 100%
+  }
+
+  .exit-btn {
+    background-color: #FFFFFF;
+    height: 100%;
+    width: 26px;
+    box-shadow: none;
+    padding: 0;
+    background-image: $exit;
+  }
+}
 
 .wrapper {
   padding: 0 80px 0 36px;
@@ -6,6 +29,7 @@
   .invalid-input {
     border: 1px solid #df4759;
   }
+
   .form-wrapper {
     display: flex;
     flex-direction: column;

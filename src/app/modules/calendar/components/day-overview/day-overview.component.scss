@@ -5,46 +5,56 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 27px;
-    p{
+
+    p {
       margin: 0;
     }
-    .p-info{
+
+    .p-info {
       font-size: 18px;
       line-height: 21px;
     }
-    .p-label{
+
+    .p-label {
       font-size: 16px;
       line-height: 19px;
       margin-bottom: 14px;
     }
-    .blue{
+
+    .blue {
       color: #799CF4;
     }
-    .yellow{
+
+    .yellow {
       color: #F5D45E;
     }
-    .red{
+
+    .red {
       color: #df4759;
     }
   }
-  .meal-container{
+
+  .meal-container {
     display: flex;
     margin-bottom: 15px;
     flex-direction: column;
     background-color: #799CF4;
     height: 50px;
     padding: 5px;
-    p{
+
+    p {
       margin: 0;
       color: #FFFFFF;
       font-size: 14px;
       line-height: 16px;
       height: 100%;
     }
-    div{
+
+    div {
       display: flex;
       justify-content: space-between;
-      .bold{
+
+      .bold {
         font-weight: bold;
       }
     }

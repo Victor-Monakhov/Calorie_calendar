@@ -1,4 +1,7 @@
-<button class="cancel-btn" (click)="onCancel()">Cancel</button>
+<div class="navigation-wrapper">
+  <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+  <button class="exit-btn" (click)="onExit()"></button>
+</div>
 <div class="title-wrapper">
   <h1>Personal settings</h1>
 </div>
@@ -28,10 +31,10 @@
     </div>
     <div class="form-wrapper">
       <label for="age">Age (years)</label>
-        <input class="form-control"
-               type="text"
-               id="age"
-               formControlName="age">
+      <input class="form-control"
+             type="text"
+             id="age"
+             formControlName="age">
       <hr [ngClass]="{'invalid-input' : form.get('age')?.invalid}">
     </div>
   </div>

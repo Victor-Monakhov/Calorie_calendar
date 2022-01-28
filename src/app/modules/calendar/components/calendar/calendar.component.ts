@@ -35,35 +35,36 @@ export class CalendarComponent implements OnInit {
     this.calendarService.updateState(this.deltaWeek);
   }
 
-  public onSwipeLeft(){
+  public onSwipeLeft() {
     this.deltaWeek = this.weekDays.length;
     this.calendarService.updateState(this.deltaWeek);
   }
-  public onSwipeRight(){
+
+  public onSwipeRight() {
     this.deltaWeek = -this.weekDays.length;
     this.calendarService.updateState(this.deltaWeek);
   }
 
-  public onFood(info: string){
-      this.router.navigate(['/meal'], {queryParams: {key: info}});
+  public onFood(info: string) {
+    this.router.navigate(['/meal'], {queryParams: {key: info}});
   }
 
-  public onSettings(){
+  public onSettings() {
     this.router.navigate(['/settings']);
   }
 
-  public onTodayMeal(){
+  public onTodayMeal() {
     this.router.navigate(['/meal'],
-     {queryParams: {key: this.calendarService.createKey(this.currentDate, '06:00'), mode: 'create'}});
+      {queryParams: {key: this.calendarService.createKey(this.currentDate, '06:00'), mode: 'create'}});
   }
 
-  public onDay(kcalAmount: number, day: string, month: string, year: string){
-    if(kcalAmount > 0) {
+  public onDay(kcalAmount: number, day: string, month: string, year: string) {
+    if (kcalAmount > 0) {
       this.router.navigate(['/day-overview'], {queryParams: {'day': day, 'month': month, 'year': year}});
     }
   }
 
-  public checkCurrentDay(day: string): boolean{
+  public checkCurrentDay(day: string): boolean {
     const dynamicDate = `${day}${this.date.getMonth()}${this.date.getFullYear()}`;
     const currentDate = `${this.currentDate.getDate()}${this.currentDate.getMonth()}${this.currentDate.getFullYear()}`
     return dynamicDate === currentDate;

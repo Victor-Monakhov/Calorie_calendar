@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MealInfo} from "../../../../shared/classes/meal-info";
 import {CalendarService} from "../../../../shared/services/calendar.service";
@@ -12,28 +12,29 @@ export class MealInfoViewComponent implements OnInit {
 
   public meal: MealInfo = {} as MealInfo;
 
-  constructor(private router: Router, private aRoute: ActivatedRoute, private calendarService: CalendarService) { }
+  constructor(private router: Router, private aRoute: ActivatedRoute, private calendarService: CalendarService) {
+  }
 
   ngOnInit(): void {
     const key: string = this.aRoute.snapshot.queryParams['key'];
-    if(!key){
+    if (!key) {
       this.router.navigate(['/']);
       return;
     }
     const meal: MealInfo | undefined = this.calendarService.getMealByKey(key);
-    if(!meal) {
+    if (!meal) {
       this.router.navigate(['/']);
       return;
     }
     this.meal = meal;
   }
 
-  public onCancel(){
+  public onCancel() {
     this.router.navigate(['/calendar']);
   }
 
-  public onEditMeal(){
+  public onEditMeal() {
     this.router.navigate(['meal'],
-      {queryParams:{key: this.meal.key, mode: 'edit'}});
+      {queryParams: {key: this.meal.key, mode: 'edit'}});
   }
 }

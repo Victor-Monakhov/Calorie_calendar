@@ -11,7 +11,8 @@ export class MealInfo {
   public fats: number = 0;
   public proteins: number = 0;
   public carbohydrates: number = 0;
-  constructor(info: string){
+
+  constructor(info: string) {
     this.key = info;
     let infoData = info.split('|');
     this.day = +infoData[0];

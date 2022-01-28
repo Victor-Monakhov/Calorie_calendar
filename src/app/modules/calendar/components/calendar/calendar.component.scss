@@ -7,7 +7,7 @@ $cell-height: 6vh;
   position: relative;
   min-width: 300px;
 
-  .add-today-meal{
+  .add-today-meal {
     position: fixed;
     right: 6px;
     bottom: 6px;
@@ -112,16 +112,20 @@ $cell-height: 6vh;
           display: flex;
           justify-content: center;
           align-items: center;
-          p{
+
+          p {
             font-weight: bold;
           }
-          .yellow{
+
+          .yellow {
             color: #F5D45E;
           }
+
           .red {
             color: #F47981;
           }
-          .blue{
+
+          .blue {
             color: #799CF4;
           }
         }
@@ -245,7 +249,8 @@ $cell-height: 6vh;
               white-space: nowrap;
               color: #FFFFFF;
             }
-            .bold{
+
+            .bold {
               font-weight: bold;
             }
           }

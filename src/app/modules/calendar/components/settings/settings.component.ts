@@ -10,6 +10,7 @@ import {
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CalendarService} from "../../../../shared/services/calendar.service";
+import {GoogleLoginProvider, SocialAuthService} from "angularx-social-login";
 
 @Component({
   selector: 'app-settings',
@@ -31,7 +32,11 @@ export class SettingsComponent implements OnInit {
     carbohydrates: [142, [Validators.min(10), Validators.max(1000), Validators.pattern('[0-9]*')]]
   });
 
-  constructor(private fb: FormBuilder, private router: Router, private calenderService: CalendarService) {}
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private calenderService: CalendarService,
+              private socialAuthService: SocialAuthService) {
+  }
 
   ngOnInit(): void {
     this.form.setValue({
@@ -44,28 +49,35 @@ export class SettingsComponent implements OnInit {
       fats: this.calenderService.userSettings.fats,
       proteins: this.calenderService.userSettings.proteins,
       carbohydrates: this.calenderService.userSettings.carbohydrates
-      });
+    });
   }
 
-  public onCancel(){
+  public onCancel() {
     this.router.navigate(['/calendar']);
   }
 
-  public onSave(){
+  public onSave() {
     this.calenderService.updateUserSettings(this.form);
     this.router.navigate(['/calendar']);
   }
 
-  public onCalculate(){
+  public onExit() {
+    this.socialAuthService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID).then(() => this.socialAuthService.signOut()).then(() => {
+      localStorage.removeItem('token');
+      this.router.navigate(['/']);
+    });
+  }
+
+  public onCalculate() {
     const minKcal: number = Math.floor((10 * this.form.value.weight) +
       (6.25 * this.form.value.height) -
       (5 * this.form.value.age) +
-      ((this.form.value.gender === 'male') ?  5 : -161));
+      ((this.form.value.gender === 'male') ? 5 : -161));
     const maxKcal: number = Math.floor(minKcal * 1.55);
-    const averageKcal: number = Math.floor((minKcal + maxKcal)/2);
-    const fats: number = Math.floor(0.3*averageKcal/9);
-    const proteins: number = Math.floor(0.3*averageKcal/4);
-    const carbohydrates: number = Math.floor(0.3*averageKcal/4);
+    const averageKcal: number = Math.floor((minKcal + maxKcal) / 2);
+    const fats: number = Math.floor(0.3 * averageKcal / 9);
+    const proteins: number = Math.floor(0.3 * averageKcal / 4);
+    const carbohydrates: number = Math.floor(0.3 * averageKcal / 4);
     this.form.patchValue({'minKcal': minKcal});
     this.form.patchValue({'maxKcal': maxKcal});
     this.form.patchValue({'fats': fats});

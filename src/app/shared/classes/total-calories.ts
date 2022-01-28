@@ -1,4 +1,4 @@
-export class TotalCalories{
+export class TotalCalories {
   public amount: number = 0;
   public fats: number = 0;
   public proteins: number = 0;
@@ -11,13 +11,14 @@ export class TotalCalories{
   public month: string = '0';
   public year: string = '0';
 
-  constructor() {}
+  constructor() {
+  }
 
 
-  public getStatus(min: number, max: number, total: number): string{
-    if(min <= total && max >= total){
+  public getStatus(min: number, max: number, total: number): string {
+    if (min <= total && max >= total) {
       return 'blue';
-    } else if(min > total){
+    } else if (min > total) {
       return 'yellow';
     } else {
       return 'red';

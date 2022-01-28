@@ -1,10 +1,13 @@
 @import "fonts.scss";
 @import "icons.scss";
-.wrapper{
+
+.wrapper {
   padding: 70px 30px 0 30px;
-  .title-wrapper{
+
+  .title-wrapper {
     padding: 0;
-    h1{
+
+    h1 {
       font-family: Risque, sans-serif;
       font-style: normal;
       font-weight: normal;
@@ -13,11 +16,13 @@
       color: #799CF4;
     }
   }
-  .slogan-wrapper{
+
+  .slogan-wrapper {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    h2{
+
+    h2 {
       margin: 0;
       font-style: normal;
       font-weight: 300;
@@ -25,30 +30,35 @@
       line-height: 35px;
     }
   }
-  .logo-wrapper{
+
+  .logo-wrapper {
     display: flex;
     justify-content: center;
     margin-top: 50px;
     margin-bottom: 20px;
-    .logo{
+
+    .logo {
       width: 73px;
       height: 250px;
       background-image: $logo;
     }
   }
-  .auth-wrapper{
+
+  .auth-wrapper {
     display: flex;
     justify-content: center;
     margin-top: 50px;
     margin-bottom: 50px;
-    .auth{
+
+    .auth {
       display: flex;
       height: 60px;
       width: 297px;
       padding: 0;
       box-shadow: none;
       border: 1px solid #799CF4;
-      .google-logo{
+
+      .google-logo {
         width: 58px;
         height: 100%;
         background-color: #FFFFFF;
@@ -57,7 +67,8 @@
         background-repeat: no-repeat;
         flex-shrink: 0;
       }
-      .sign-in{
+
+      .sign-in {
         display: flex;
         align-items: center;
         justify-content: center;

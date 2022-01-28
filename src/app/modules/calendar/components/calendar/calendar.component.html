@@ -11,7 +11,7 @@
         <div class="drop-down"></div>
       </button>
     </div>
-    <div class="right-header-part" >
+    <div class="right-header-part">
       <div class="calories-checker">
         <div class="calorie-intake"
              *ngFor="let calories of totalCalories;"
@@ -24,7 +24,7 @@
              *ngFor="let calories of totalCalories; let i = index"
              (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
           <p class="date"
-            [ngClass]="{'current-day': checkCurrentDay(calories.day)}">
+             [ngClass]="{'current-day': checkCurrentDay(calories.day)}">
             {{calories.day}}
           </p>
           <p>{{weekDays[i]}}</p>

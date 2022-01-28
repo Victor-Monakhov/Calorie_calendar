@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {GoogleLoginProvider, SocialAuthService, SocialUser} from "angularx-social-login";
 
 @Component({
   selector: 'app-start',
@@ -8,12 +9,23 @@ import {Router} from "@angular/router";
 })
 export class StartComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  public socialUser?: SocialUser;
+  public isLoggedIn: boolean = false;
+
+  constructor(private router: Router, private socialAuthService: SocialAuthService) { }
 
   ngOnInit(): void {
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      this.isLoggedIn = (user != null);
+      if(this.isLoggedIn){
+        localStorage.setItem('token', JSON.stringify(this.socialUser.authToken));
+        this.router.navigate(['/calendar']);
+      }
+    });
   }
 
   public onAuth(){
-    this.router.navigate(['/calendar']);
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 }

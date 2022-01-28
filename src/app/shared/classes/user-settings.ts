@@ -1,4 +1,4 @@
-export class UserSettings{
+export class UserSettings {
   public gender: string = 'male';
   public age: number = 25;
   public weight: number = 55;
@@ -8,7 +8,7 @@ export class UserSettings{
   public fats: number = 63;
   public proteins: number = 142;
   public carbohydrates: number = 142;
-  constructor(){
 
+  constructor() {
   }
 }

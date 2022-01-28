@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {MealInfo} from "../../../../shared/classes/meal-info";
@@ -40,11 +40,11 @@ export class DayOverviewComponent implements OnInit {
     this.totalCalories = this.calendarService.getTotalCalories(this.day, this.month, this.year);
   }
 
-  public onCancel(){
+  public onCancel() {
     this.router.navigate(['/calendar']);
   }
 
-  public onMeal(key: string){
+  public onMeal(key: string) {
     this.router.navigate(['/meal'], {queryParams: {'key': key}});
   }
 
