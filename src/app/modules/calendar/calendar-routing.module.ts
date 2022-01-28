@@ -6,11 +6,16 @@ import {NewMealComponent} from "./components/new-meal/new-meal.component";
 import {SettingsComponent} from "./components/settings/settings.component";
 import {MealInfoViewComponent} from "./components/meal-info-view/meal-info-view.component";
 import {DayOverviewComponent} from "./components/day-overview/day-overview.component";
+import {StartComponent} from "./components/start/start.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: CalendarComponent,
+    component: StartComponent,
+  },
+  {
+    path: 'calendar',
+    component: CalendarComponent
   },
   {
     path: 'meal',

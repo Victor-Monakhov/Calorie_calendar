@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Router} from "@angular/router";
-import {TotalCalories} from "../../../../shared/models/total-calories";
+import {TotalCalories} from "../../../../shared/classes/total-calories";
 
 
 @Component({

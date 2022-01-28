@@ -27,7 +27,7 @@ export class NewMealComponent implements OnInit {
     const key: string = this.aRoute.snapshot.queryParams['key'];
     this.mode = this.aRoute.snapshot.queryParams['mode'];
     if(!key){
-      this.router.navigate(['/']);
+      this.router.navigate(['/calendar']);
       return;
     }
 
@@ -51,7 +51,7 @@ export class NewMealComponent implements OnInit {
   }
 
   public onCancel(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/calendar']);
   }
 
   public onAddMeal(){

@@ -48,12 +48,12 @@ export class SettingsComponent implements OnInit {
   }
 
   public onCancel(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/calendar']);
   }
 
   public onSave(){
     this.calenderService.updateUserSettings(this.form);
-    this.router.navigate(['/']);
+    this.router.navigate(['/calendar']);
   }
 
   public onCalculate(){

@@ -1,8 +1,9 @@
 <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+<div class="title-wrapper">
+  <h1>{{mode === 'edit' ? 'Edit meal' : 'New meal'}}</h1>
+</div>
 <div class="wrapper" [formGroup]="form">
-  <div class="title-wrapper">
-    <h1>{{mode === 'edit' ? 'Edit meal' : 'New meal'}}</h1>
-  </div>
+  <div class="background-logo"></div>
   <div class="form-wrapper">
     <label for="name">Title</label>
     <input class="form-control"
@@ -66,7 +67,7 @@
 <div class="add-meal-wrapper">
   <button [disabled]="form.invalid"
           (click)="onAddMeal()">
-    {{mode === mode ? 'Edit meal' : 'Add meal'}}
+    {{mode === 'edit' ? 'Edit meal' : 'Add meal'}}
   </button>
 </div>
 

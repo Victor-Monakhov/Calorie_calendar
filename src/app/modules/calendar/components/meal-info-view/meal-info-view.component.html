@@ -1,10 +1,13 @@
 <button class="cancel-btn" (click)="onCancel()">Back</button>
+<div class="title-wrapper">
+  <h1>
+    {{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
+    (+meal.hours > 16) ? 'Dinner ' + meal.name :
+      'Lunch ' + meal.name}}
+  </h1>
+</div>
 <div class="wrapper">
-  <div class="title-wrapper">
-    <h1>{{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
-      (+meal.hours > 16) ? 'Dinner ' + meal.name :
-      'Lunch ' + meal.name}}</h1>
-  </div>
+  <div class="background-logo"></div>
   <div class="item-wrapper">
     <p class="p-label">Time</p>
     <p class="p-info">{{meal.time}}</p>

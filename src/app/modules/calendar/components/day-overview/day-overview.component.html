@@ -3,23 +3,36 @@
   <h1>{{(isCurrentDay) ? 'Today' : months[month] + ' ' + day}}</h1>
 </div>
 <div class="wrapper">
+  <div class="background-logo"></div>
   <div class="item-wrapper">
     <p class="p-label">Kcal</p>
-    <p class="p-info">{{totalCalories?.amount + ' / ' + userSettings?.maxKcal}}</p>
+    <p class="p-info"
+       [class]="totalCalories?.status">
+      {{totalCalories?.amount + ' / ' + userSettings?.maxKcal}}
+    </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Fats (gm)</p>
-    <p class="p-info">{{totalCalories?.fats + ' / ' + userSettings?.fats}}</p>
+    <p class="p-info"
+       [class]="totalCalories?.fatsStatus">
+      {{totalCalories?.fats + ' / ' + userSettings?.fats}}
+    </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Proteins (gm)</p>
-    <p class="p-info">{{totalCalories?.proteins + ' / ' + userSettings?.proteins}}</p>
+    <p class="p-info"
+       [class]="totalCalories?.proteinsStatus">
+      {{totalCalories?.proteins + ' / ' + userSettings?.proteins}}
+    </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Carbohydrates (gm)</p>
-    <p class="p-info">{{totalCalories?.carbohydrates + ' / ' + userSettings?.carbohydrates}}</p>
+    <p class="p-info"
+       [class]="totalCalories?.carbohydratesStatus">
+      {{totalCalories?.carbohydrates + ' / ' + userSettings?.carbohydrates}}
+    </p>
   </div>
-  <div class="meal-container" *ngFor="let meal of meals">
+  <div class="meal-container" *ngFor="let meal of meals" (click)="onMeal(meal.key)">
     <p>{{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
       (+meal.hours > 16) ? 'Dinner ' + meal.name :
         'Lunch ' + meal.name}}</p>

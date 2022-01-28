@@ -124,4 +124,8 @@ $vollkorn: '../fonts/vollkorn';
   font-family: Volkorn-SemiBoldItalic;
   src: url($vollkorn + '/Vollkorn-SemiBoldItalic.ttf');
 }
+@font-face{
+  font-family: Risque;
+  src: url('../fonts/risque/Risque-Regular.ttf');
+}
 

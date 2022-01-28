@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {MealInfo} from "../../../../shared/classes/meal-info";
 import {UserSettings} from "../../../../shared/classes/user-settings";
-import {TotalCalories} from "../../../../shared/models/total-calories";
+import {TotalCalories} from "../../../../shared/classes/total-calories";
 
 @Component({
   selector: 'app-day-overview',
@@ -33,6 +33,7 @@ export class DayOverviewComponent implements OnInit {
     this.month = +this.aRoute.snapshot.queryParams['month'];
     this.year = +this.aRoute.snapshot.queryParams['year'];
     this.meals = this.calendarService.getMealsPerDey(this.day, this.month, this.year);
+    this.meals.sort((a, b) => +a.hours - +b.hours);
     this.isCurrentDay = this.day === this.currentDay.getDate() &&
       this.month === this.currentDay.getMonth() &&
       this.year === this.currentDay.getFullYear();
@@ -40,7 +41,11 @@ export class DayOverviewComponent implements OnInit {
   }
 
   public onCancel(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/calendar']);
+  }
+
+  public onMeal(key: string){
+    this.router.navigate(['/meal'], {queryParams: {'key': key}});
   }
 
 }

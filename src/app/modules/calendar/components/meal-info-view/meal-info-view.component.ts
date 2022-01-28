@@ -29,12 +29,11 @@ export class MealInfoViewComponent implements OnInit {
   }
 
   public onCancel(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/calendar']);
   }
 
   public onEditMeal(){
     this.router.navigate(['meal'],
       {queryParams:{key: this.meal.key, mode: 'edit'}});
   }
-
 }

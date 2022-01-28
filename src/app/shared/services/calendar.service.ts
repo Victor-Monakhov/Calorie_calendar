@@ -3,7 +3,7 @@ import {AbstractControl} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 import {MealInfo} from "../classes/meal-info";
 import {UserSettings} from "../classes/user-settings";
-import {TotalCalories} from "../models/total-calories";
+import {TotalCalories} from "../classes/total-calories";
 
 
 @Injectable({
@@ -17,6 +17,7 @@ export class CalendarService {
     ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
   public readonly mealsKey: string = 'meals';
   public readonly settingsKey: string = 'settings';
+  public readonly caloriesKey: string = 'calories';
   public userSettings: UserSettings;
   public meals$: BehaviorSubject<MealInfo[]> = new BehaviorSubject<MealInfo[]>([]);
   public date: Date = new Date();
@@ -28,8 +29,10 @@ export class CalendarService {
     for(let i = 0; i < this.times.length * this.weekDays.length; ++i){
       this.keys.push('');
     }
+    const totalCalories = JSON.parse(localStorage.getItem(this.caloriesKey) as string) ?? new TotalCalories();
     for(let i = 0; i < this.weekDays.length; ++i){
-      this.totalCalories.push({} as TotalCalories);
+      this.totalCalories.push(new TotalCalories());
+      Object.assign(this.totalCalories[i], totalCalories[i]);
     }
     this.userSettings = JSON.parse(localStorage.getItem(this.settingsKey) as string) ?? new UserSettings();
     this.meals$.next(JSON.parse(localStorage.getItem(this.mealsKey) as string) ?? []) ;
@@ -37,6 +40,12 @@ export class CalendarService {
 
   public createKey(date: Date, time: string): string{
     return `${date.getDate()}|${date.getMonth()}|${date.getFullYear()}|${time.split(':')[0]}`
+  }
+
+  private keysInit(date: Date, weekDay: number){
+    for(let i = 0, time = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length, ++time){
+      this.keys[weekDay + i] = this.createKey(date, this.times[time]);
+    }
   }
 
   private getWeekDay(date: Date): number{
@@ -47,23 +56,8 @@ export class CalendarService {
     return day;
   }
 
-  private checkCaloriesStatus(weekDay:number): string{
-    const minKcal: number = this.userSettings.minKcal;
-    const maxKcal: number = this.userSettings.maxKcal;
-    const calorieIntake: number = this.totalCalories[weekDay].amount;
-    if(minKcal <= calorieIntake && maxKcal >= calorieIntake){
-      return 'blue';
-    } else if(minKcal > calorieIntake){
-      return 'yellow';
-    } else {
-      return 'red';
-    }
-  }
-
   private updateDayState(date: Date, weekDay:number): void{
-    for(let i = 0, time = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length, ++time){
-      this.keys[weekDay + i] = this.createKey(date, this.times[time]);
-    }
+    this.keysInit(date, weekDay);
     let caloriesPerDay: number = 0;
     let fatsPerDay: number = 0;
     let proteinsPerDay: number = 0;
@@ -82,7 +76,18 @@ export class CalendarService {
     this.totalCalories[weekDay].fats = fatsPerDay;
     this.totalCalories[weekDay].proteins = proteinsPerDay;
     this.totalCalories[weekDay].carbohydrates = carbohydratesPerDay;
-    this.totalCalories[weekDay].status = this.checkCaloriesStatus(weekDay);
+    this.totalCalories[weekDay].status = this.totalCalories[weekDay].getStatus(
+      this.userSettings.minKcal, this.userSettings.maxKcal, this.totalCalories[weekDay].amount
+    );
+    this.totalCalories[weekDay].fatsStatus = this.totalCalories[weekDay].getStatus(
+      this.userSettings.fats, this.userSettings.fats, this.totalCalories[weekDay].fats
+    );
+    this.totalCalories[weekDay].proteinsStatus = this.totalCalories[weekDay].getStatus(
+      this.userSettings.proteins, this.userSettings.proteins, this.totalCalories[weekDay].proteins
+    );
+    this.totalCalories[weekDay].carbohydratesStatus = this.totalCalories[weekDay].getStatus(
+      this.userSettings.carbohydrates, this.userSettings.carbohydrates, this.totalCalories[weekDay].carbohydrates
+    );
     this.totalCalories[weekDay].day = `${date.getDate()}`;
     this.totalCalories[weekDay].month = `${date.getMonth()}`;
     this.totalCalories[weekDay].year = `${date.getFullYear()}`;
@@ -104,6 +109,8 @@ export class CalendarService {
     this.date.setFullYear(constYear);
     this.date.setMonth(constMonth);
     this.date.setDate(constDate);
+    localStorage.removeItem(this.caloriesKey);
+    localStorage.setItem(this.caloriesKey, JSON.stringify(this.totalCalories));
   }
 
   public updateMeals(meal: MealInfo, form: AbstractControl): void{

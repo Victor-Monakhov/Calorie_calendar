@@ -8,6 +8,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import {MealPipe} from "../../shared/pipes/meal.pipe";
 import { MealInfoViewComponent } from './components/meal-info-view/meal-info-view.component';
 import { DayOverviewComponent } from './components/day-overview/day-overview.component';
+import { StartComponent } from './components/start/start.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { DayOverviewComponent } from './components/day-overview/day-overview.com
     SettingsComponent,
     MealPipe,
     MealInfoViewComponent,
-    DayOverviewComponent
+    DayOverviewComponent,
+    StartComponent
   ],
     imports: [
         CommonModule,

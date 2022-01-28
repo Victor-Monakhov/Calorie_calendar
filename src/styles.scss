@@ -1,4 +1,5 @@
 @import "fonts.scss";
+@import "icons.scss";
 body{
   padding: 0;
   margin: 0;
@@ -52,5 +53,25 @@ body{
     height: 21px;
     box-shadow: none;
     padding: 0;
+  }
+
+  .title-wrapper {
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0 60px 0 60px;
+    h1 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .background-logo{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 73px;
+    height: 250px;
+    background-image: $bg-logo;
   }
 }
