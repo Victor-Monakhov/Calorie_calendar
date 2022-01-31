@@ -1,17 +1,11 @@
 import {Injectable, NgModule} from '@angular/core';
 import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig, HammerModule} from '@angular/platform-browser';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {StoreModule} from '@ngrx/store';
-import {reducers, metaReducers} from './reducers';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {environment} from '../environments/environment';
-import {EffectsModule} from '@ngrx/effects';
-import {AppEffects} from './app.effects';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
+import {StartComponent} from "./modules/calendar/components/start/start.component";
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -24,17 +18,13 @@ export class MyHammerConfig extends HammerGestureConfig {
 @NgModule({
   declarations: [
     AppComponent,
+    StartComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HammerModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    }),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    EffectsModule.forRoot([AppEffects]),
     ReactiveFormsModule,
     SocialLoginModule
   ],

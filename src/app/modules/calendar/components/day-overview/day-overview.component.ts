@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {MealInfo} from "../../../../shared/classes/meal-info";
 import {UserSettings} from "../../../../shared/classes/user-settings";
-import {TotalCalories} from "../../../../shared/classes/total-calories";
+import {CaloriesInfo} from "../../../../shared/classes/calories-info";
 
 @Component({
   selector: 'app-day-overview',
@@ -20,7 +20,7 @@ export class DayOverviewComponent implements OnInit {
   public month: number = 0;
   public year: number = 0;
   public userSettings: UserSettings;
-  public totalCalories?: TotalCalories;
+  public totalCalories?: CaloriesInfo;
 
   constructor(private router: Router, private aRoute: ActivatedRoute, private calendarService: CalendarService) {
     this.months = this.calendarService.months;
@@ -37,14 +37,14 @@ export class DayOverviewComponent implements OnInit {
     this.isCurrentDay = this.day === this.currentDay.getDate() &&
       this.month === this.currentDay.getMonth() &&
       this.year === this.currentDay.getFullYear();
-    this.totalCalories = this.calendarService.getTotalCalories(this.day, this.month, this.year);
+    this.totalCalories = this.calendarService.getCaloriesInfo(this.day, this.month, this.year);
   }
 
-  public onCancel() {
+  public onCancel(): void {
     this.router.navigate(['/calendar']);
   }
 
-  public onMeal(key: string) {
+  public onMeal(key: string): void {
     this.router.navigate(['/meal'], {queryParams: {'key': key}});
   }
 

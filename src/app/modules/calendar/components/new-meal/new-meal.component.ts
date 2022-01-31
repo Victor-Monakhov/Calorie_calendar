@@ -51,11 +51,11 @@ export class NewMealComponent implements OnInit {
     }
   }
 
-  public onCancel() {
+  public onCancel(): void {
     this.router.navigate(['/calendar']);
   }
 
-  public onAddMeal() {
+  public onAddMeal(): void {
     this.calendarService.updateMeals(this.meal, this.form);
     this.onCancel();
   }

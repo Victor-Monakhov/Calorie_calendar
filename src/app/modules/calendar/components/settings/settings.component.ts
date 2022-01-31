@@ -1,11 +1,7 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnChanges,
   OnInit,
-  SimpleChanges
 } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -52,23 +48,25 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  public onCancel() {
+  public onCancel(): void {
     this.router.navigate(['/calendar']);
   }
 
-  public onSave() {
+  public onSave(): void {
     this.calenderService.updateUserSettings(this.form);
     this.router.navigate(['/calendar']);
   }
 
-  public onExit() {
-    this.socialAuthService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID).then(() => this.socialAuthService.signOut()).then(() => {
+  public onExit(): void {
+    this.socialAuthService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID).
+    then(() => this.socialAuthService.signOut()).
+    then(() => {
       localStorage.removeItem('token');
       this.router.navigate(['/']);
     });
   }
 
-  public onCalculate() {
+  public onCalculate(): void {
     const minKcal: number = Math.floor((10 * this.form.value.weight) +
       (6.25 * this.form.value.height) -
       (5 * this.form.value.age) +

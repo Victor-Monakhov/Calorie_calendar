@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Router} from "@angular/router";
-import {TotalCalories} from "../../../../shared/classes/total-calories";
+import {CaloriesInfo} from "../../../../shared/classes/calories-info";
+import {Helper} from "../../../../shared/classes/helper";
 
 
 @Component({
@@ -19,7 +20,7 @@ export class CalendarComponent implements OnInit {
   public months: string[];
   public times: string[];
   public keys: string[];
-  public totalCalories: TotalCalories[];
+  public totalCalories: CaloriesInfo[];
 
   constructor(public calendarService: CalendarService, public router: Router) {
     this.weekDays = this.calendarService.weekDays;
@@ -27,7 +28,7 @@ export class CalendarComponent implements OnInit {
     this.times = this.calendarService.times;
     this.keys = this.calendarService.keys;
     this.date = this.calendarService.date;
-    this.totalCalories = this.calendarService.totalCalories;
+    this.totalCalories = this.calendarService.caloriesPerWeek;
     this.currentDate = this.calendarService.currentDay;
   }
 
@@ -35,32 +36,34 @@ export class CalendarComponent implements OnInit {
     this.calendarService.updateState(this.deltaWeek);
   }
 
-  public onSwipeLeft() {
+  public onSwipeLeft(): void {
     this.deltaWeek = this.weekDays.length;
     this.calendarService.updateState(this.deltaWeek);
   }
 
-  public onSwipeRight() {
+  public onSwipeRight(): void {
     this.deltaWeek = -this.weekDays.length;
     this.calendarService.updateState(this.deltaWeek);
   }
 
-  public onFood(info: string) {
+  public onFood(info: string): void {
     this.router.navigate(['/meal'], {queryParams: {key: info}});
   }
 
-  public onSettings() {
+  public onSettings(): void {
     this.router.navigate(['/settings']);
   }
 
-  public onTodayMeal() {
+  public onTodayMeal(): void {
+    const key = Helper.createKey(this.currentDate, '06:00')
     this.router.navigate(['/meal'],
-      {queryParams: {key: this.calendarService.createKey(this.currentDate, '06:00'), mode: 'create'}});
+      {queryParams: {'key': key, mode: 'create'}});
   }
 
-  public onDay(kcalAmount: number, day: string, month: string, year: string) {
+  public onDay(kcalAmount: number, day: string, month: string, year: string): void {
     if (kcalAmount > 0) {
-      this.router.navigate(['/day-overview'], {queryParams: {'day': day, 'month': month, 'year': year}});
+      this.router.navigate(['/day-overview'],
+        {queryParams: {'day': day, 'month': month, 'year': year}});
     }
   }
 

@@ -15,17 +15,17 @@ export class StartComponent implements OnInit {
   constructor(private router: Router, private socialAuthService: SocialAuthService) { }
 
   ngOnInit(): void {
-    this.socialAuthService.authState.subscribe((user) => {
+    this.socialAuthService.authState.subscribe((user: any) => {
       this.socialUser = user;
       this.isLoggedIn = (user != null);
       if(this.isLoggedIn){
-        localStorage.setItem('token', JSON.stringify(this.socialUser.authToken));
+        localStorage.setItem('token', JSON.stringify(this.socialUser?.authToken));
         this.router.navigate(['/calendar']);
       }
     });
   }
 
-  public onAuth(){
+  public onAuth(): void{
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 }

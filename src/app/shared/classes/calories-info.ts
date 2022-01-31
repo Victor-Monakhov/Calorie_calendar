@@ -1,4 +1,4 @@
-export class TotalCalories {
+export class CaloriesInfo {
   public amount: number = 0;
   public fats: number = 0;
   public proteins: number = 0;
@@ -13,7 +13,6 @@ export class TotalCalories {
 
   constructor() {
   }
-
 
   public getStatus(min: number, max: number, total: number): string {
     if (min <= total && max >= total) {

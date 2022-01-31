@@ -1,14 +1,13 @@
-import {Injectable, NgModule} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CalendarComponent } from './components/calendar/calendar.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {CalendarComponent} from './components/calendar/calendar.component';
 import {CalendarRoutingModule} from "./calendar-routing.module";
-import { NewMealComponent } from './components/new-meal/new-meal.component';
+import {NewMealComponent} from './components/new-meal/new-meal.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { SettingsComponent } from './components/settings/settings.component';
+import {SettingsComponent} from './components/settings/settings.component';
 import {MealPipe} from "../../shared/pipes/meal.pipe";
-import { MealInfoViewComponent } from './components/meal-info-view/meal-info-view.component';
-import { DayOverviewComponent } from './components/day-overview/day-overview.component';
-import { StartComponent } from './components/start/start.component';
+import {MealInfoViewComponent} from './components/meal-info-view/meal-info-view.component';
+import {DayOverviewComponent} from './components/day-overview/day-overview.component';
 
 @NgModule({
   declarations: [
@@ -17,17 +16,17 @@ import { StartComponent } from './components/start/start.component';
     SettingsComponent,
     MealPipe,
     MealInfoViewComponent,
-    DayOverviewComponent,
-    StartComponent
+    DayOverviewComponent
   ],
-    imports: [
-        CommonModule,
-        CalendarRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-    ],
+  imports: [
+    CommonModule,
+    CalendarRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   exports: [
     MealPipe
   ],
 })
-export class CalendarModule { }
+export class CalendarModule {
+}
