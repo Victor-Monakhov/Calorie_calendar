@@ -30,6 +30,10 @@ export class StorageService {
     return JSON.parse(localStorage.getItem(StorageKeys.mealsKey) as string) ?? [];
   }
 
+  public getToken(): string {
+    return JSON.parse(localStorage.getItem(StorageKeys.token) as string) ?? '';
+  }
+
   public setItem(storageKey: StorageKeys, value: any): void {
     localStorage.setItem(storageKey, JSON.stringify(value));
   }

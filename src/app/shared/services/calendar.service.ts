@@ -34,7 +34,13 @@ export class CalendarService {
 
   private keysInit(date: Date, weekDay: number) {
     for (let i = 0, time = 0; i < this.times.length * this.weekDays.length; i += this.weekDays.length, ++time) {
-      this.keys[weekDay + i] = Helper.createKey(date, this.times[time]);
+      //console.log(weekDay + i);
+      //try{
+        this.keys[weekDay + i] = Helper.createKey(date, this.times[time]);
+      // }
+      // catch (ex: any){
+      //   console.log(ex);
+      // }
     }
   }
 
@@ -78,6 +84,7 @@ export class CalendarService {
     this.date.setMonth(constMonth);
     this.date.setDate(constDate);
     this.storageService.setItem(StorageKeys.caloriesKey, this.caloriesPerWeek);
+    console.log('hello');
   }
 
   public updateMeals(meal: MealInfo, form: AbstractControl): void {

@@ -65,7 +65,12 @@
         "class-name": true,
         "comment-format": [
           true,
-          {"ignore-words": ["TODO", "HACK"]}
+          {
+            "ignore-words": [
+              "TODO",
+              "HACK"
+            ]
+          }
         ],
         "completed-docs": false,
         "curly": true,
@@ -79,7 +84,9 @@
           true,
           "spaces"
         ],
-        "interface-name": [true],
+        "interface-name": [
+          true
+        ],
         "jsdoc-format": true,
         "label-position": true,
         "label-undefined": true,
@@ -94,7 +101,12 @@
         "member-access": [
           true
         ],
-        "member-ordering": [true, {"order": "fields-first"}],
+        "member-ordering": [
+          true,
+          {
+            "order": "fields-first"
+          }
+        ],
         "no-any": false,
         "no-string-literal": false,
         "no-arg": true,
@@ -201,7 +213,7 @@
         ],
         "space-within-parens": false,
         "switch-default": true,
-        "trailing-comma" : false,
+        "trailing-comma": false,
         "triple-equals": [
           true,
           "allow-null-check",
@@ -250,6 +262,14 @@
           "check-type-operator"
         ]
       }
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:ngrx/recommended"
+      ]
     }
   ]
 }

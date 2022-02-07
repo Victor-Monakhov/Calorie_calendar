@@ -3,10 +3,12 @@ import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Router} from "@angular/router";
 import {CaloriesInfo} from "../../../../shared/classes/calories-info";
 import {Helper} from "../../../../shared/classes/helper";
+import {Store} from "@ngrx/store";
+import {swipeLeft, swipeRight} from "../../../../store/reducers/calendar";
 
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'app-calendar.ts',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
@@ -20,15 +22,15 @@ export class CalendarComponent implements OnInit {
   public months: string[];
   public times: string[];
   public keys: string[];
-  public totalCalories: CaloriesInfo[];
+  public caloriesPerWeek: CaloriesInfo[];
 
-  constructor(public calendarService: CalendarService, public router: Router) {
+  constructor(private store: Store, public calendarService: CalendarService, public router: Router) {
     this.weekDays = this.calendarService.weekDays;
     this.months = this.calendarService.months;
     this.times = this.calendarService.times;
     this.keys = this.calendarService.keys;
     this.date = this.calendarService.date;
-    this.totalCalories = this.calendarService.caloriesPerWeek;
+    this.caloriesPerWeek = this.calendarService.caloriesPerWeek;
     this.currentDate = this.calendarService.currentDay;
   }
 
@@ -38,12 +40,14 @@ export class CalendarComponent implements OnInit {
 
   public onSwipeLeft(): void {
     this.deltaWeek = this.weekDays.length;
-    this.calendarService.updateState(this.deltaWeek);
+    this.store.dispatch(swipeLeft({deltaWeek: this.deltaWeek}));
+    //this.calendarService.updateState(this.deltaWeek);
   }
 
   public onSwipeRight(): void {
     this.deltaWeek = -this.weekDays.length;
-    this.calendarService.updateState(this.deltaWeek);
+    this.store.dispatch(swipeRight({deltaWeek: this.deltaWeek}));
+    //this.calendarService.updateState(this.deltaWeek);
   }
 
   public onFood(info: string): void {

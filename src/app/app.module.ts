@@ -6,6 +6,14 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
 import {StartComponent} from "./modules/calendar/components/start/start.component";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptor} from "./shared/classes/auth.interceptor";
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './store/reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './store/effects/app.effects';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -26,10 +34,21 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserAnimationsModule,
     HammerModule,
     ReactiveFormsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    HttpClientModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AppEffects])
   ],
   bootstrap: [AppComponent],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      multi: true,
+      useClass: AuthInterceptor
+    },
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

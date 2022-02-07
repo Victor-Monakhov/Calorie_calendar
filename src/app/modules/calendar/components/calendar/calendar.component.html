@@ -14,14 +14,14 @@
     <div class="right-header-part">
       <div class="calories-checker">
         <div class="calorie-intake"
-             *ngFor="let calories of totalCalories;"
+             *ngFor="let calories of caloriesPerWeek;"
              (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
           <p [class]="calories.status">{{calories.amount === 0 ? '' : calories.amount}}</p>
         </div>
       </div>
       <div class="days-wrapper">
         <div class="day"
-             *ngFor="let calories of totalCalories; let i = index"
+             *ngFor="let calories of caloriesPerWeek; let i = index"
              (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
           <p class="date"
              [ngClass]="{'current-day': checkCurrentDay(calories.day)}">

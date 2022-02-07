@@ -1,31 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {GoogleLoginProvider, SocialAuthService, SocialUser} from "angularx-social-login";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.scss']
 })
-export class StartComponent implements OnInit {
+export class StartComponent implements OnInit, OnDestroy {
 
-  public socialUser?: SocialUser;
-  public isLoggedIn: boolean = false;
+  private destroy$: Subject<void> = new Subject();
 
-  constructor(private router: Router, private socialAuthService: SocialAuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.socialAuthService.authState.subscribe((user: any) => {
-      this.socialUser = user;
-      this.isLoggedIn = (user != null);
-      if(this.isLoggedIn){
-        localStorage.setItem('token', JSON.stringify(this.socialUser?.authToken));
+    this.authService.init().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(user =>{
+      if(user){
         this.router.navigate(['/calendar']);
       }
     });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   public onAuth(): void{
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.authService.signIn();
   }
 }

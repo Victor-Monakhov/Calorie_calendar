@@ -7,6 +7,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {GoogleLoginProvider, SocialAuthService} from "angularx-social-login";
+import {AuthService} from "../../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-settings',
@@ -31,7 +32,8 @@ export class SettingsComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               private calenderService: CalendarService,
-              private socialAuthService: SocialAuthService) {
+              private authService: AuthService) {
+    console.log('hi');
   }
 
   ngOnInit(): void {
@@ -58,12 +60,7 @@ export class SettingsComponent implements OnInit {
   }
 
   public onExit(): void {
-    this.socialAuthService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID).
-    then(() => this.socialAuthService.signOut()).
-    then(() => {
-      localStorage.removeItem('token');
-      this.router.navigate(['/']);
-    });
+    this.authService.signOut(()=>this.router.navigate(['/']));
   }
 
   public onCalculate(): void {
