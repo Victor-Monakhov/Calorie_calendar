@@ -1,18 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MealInfo} from "../../../../shared/classes/meal-info";
 import {CalendarService} from "../../../../shared/services/calendar.service";
+import {Observable} from "rxjs";
+import {Store} from "@ngrx/store";
+import {mealsSelector} from "../../../../store/reducers/calendar";
+import {SubSink} from "subsink";
 
 @Component({
   selector: 'app-meal-info-view',
   templateUrl: './meal-info-view.component.html',
   styleUrls: ['./meal-info-view.component.scss']
 })
-export class MealInfoViewComponent implements OnInit {
+export class MealInfoViewComponent implements OnInit, OnDestroy {
 
+  private subs: SubSink = new SubSink();
   public meal: MealInfo = {} as MealInfo;
+  public meals$: Observable<MealInfo[]> = this.store.select(mealsSelector);
 
-  constructor(private router: Router, private aRoute: ActivatedRoute, private calendarService: CalendarService) {
+  constructor(private store: Store, private router: Router, private aRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -21,12 +27,22 @@ export class MealInfoViewComponent implements OnInit {
       this.router.navigate(['/']);
       return;
     }
-    const meal: MealInfo | undefined = this.calendarService.getMealByKey(key);
+    let meal: MealInfo | undefined;
+    this.subs.add(
+      this.meals$.subscribe(meals => {
+        meal = meals.find(item => item.key === key);
+      })
+    );
+
     if (!meal) {
       this.router.navigate(['/']);
       return;
     }
     this.meal = meal;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   public onCancel(): void {

@@ -1,17 +1,18 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {CalendarService} from "../services/calendar.service";
 import {ShortMealInfo} from "../models/short-meal-info";
+import {StorageService} from "../services/storage.service";
 
 @Pipe({
   name: 'meal'
 })
 export class MealPipe implements PipeTransform {
 
-  constructor(public calendarService: CalendarService) {
+  constructor(public storageService: StorageService,) {
   }
 
   transform(key: string): ShortMealInfo | null {
-    const meal = this.calendarService.meals$.value.find(item => item.key === key);
+    const meal = this.storageService.getMeals().find(item => item.key === key);
     if (meal) {
       if (+meal.hours < 12) {
         return {

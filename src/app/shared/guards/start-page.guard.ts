@@ -16,7 +16,7 @@ export class StartPageGuard implements CanActivate {
     if (!localStorage.getItem('token')) {
       return true;
     } else {
-      this.router.navigate(['/calendar.ts']);
+      this.router.navigate(['/calendar']);
       return false;
     }
   }

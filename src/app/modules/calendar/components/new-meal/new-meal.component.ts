@@ -1,15 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MealInfo} from "../../../../shared/classes/meal-info";
+import {Store} from "@ngrx/store";
+import {SubSink} from "subsink";
+import {Observable} from "rxjs";
+import {mealsSelector, updateMealsInput} from "../../../../store/reducers/calendar";
 
 @Component({
   selector: 'app-new-meal',
   templateUrl: './new-meal.component.html',
   styleUrls: ['./new-meal.component.scss']
 })
-export class NewMealComponent implements OnInit {
+export class NewMealComponent implements OnInit, OnDestroy {
+
+  private subs: SubSink = new SubSink();
+  public meals$: Observable<MealInfo[]> = this.store.select(mealsSelector);
   public meal: MealInfo = {} as MealInfo;
   public mode: string = '';
   public form: FormGroup = this.fb.group({
@@ -21,7 +28,7 @@ export class NewMealComponent implements OnInit {
     carbohydrates: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3), Validators.pattern('[0-9]*')]]
   });
 
-  constructor(public aRoute: ActivatedRoute, private fb: FormBuilder, public calendarService: CalendarService, public router: Router) {
+  constructor(private store: Store, public aRoute: ActivatedRoute, private fb: FormBuilder, public router: Router) {
   }
 
   ngOnInit(): void {
@@ -31,8 +38,12 @@ export class NewMealComponent implements OnInit {
       this.router.navigate(['/calendar']);
       return;
     }
-
-    const meal: MealInfo | undefined = this.calendarService.getMealByKey(key);
+    let meal: MealInfo | undefined;
+    this.subs.add(
+      this.meals$.subscribe(meals => {
+        meal = meals.find(item => item.key === key);
+      })
+    );
     if (meal && !this.mode) {
       this.router.navigate(['/meal-info-view'], {queryParams: {'key': key}});
     } else if (meal && this.mode === 'edit') {
@@ -51,12 +62,16 @@ export class NewMealComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
   public onCancel(): void {
     this.router.navigate(['/calendar']);
   }
 
-  public onAddMeal(): void {
-    this.calendarService.updateMeals(this.meal, this.form);
+  public onAddMeal(): void{
+    this.store.dispatch(updateMealsInput({'meal': this.meal, 'form': this.form.value}));
     this.onCancel();
   }
 }

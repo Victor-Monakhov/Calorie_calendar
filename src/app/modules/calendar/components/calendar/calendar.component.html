@@ -14,14 +14,14 @@
     <div class="right-header-part">
       <div class="calories-checker">
         <div class="calorie-intake"
-             *ngFor="let calories of caloriesPerWeek;"
+             *ngFor="let calories of caloriesPerWeek$ | async;"
              (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
           <p [class]="calories.status">{{calories.amount === 0 ? '' : calories.amount}}</p>
         </div>
       </div>
       <div class="days-wrapper">
         <div class="day"
-             *ngFor="let calories of caloriesPerWeek; let i = index"
+             *ngFor="let calories of caloriesPerWeek$ | async; let i = index"
              (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
           <p class="date"
              [ngClass]="{'current-day': checkCurrentDay(calories.day)}">
@@ -46,7 +46,7 @@
       </div>
       <div class="food-info-container" [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">
         <div class="cell-wrapper"
-             *ngFor="let key of keys">
+             *ngFor="let key of keys$ | async">
           <div class="food-info" (click)="onFood(key)">
             <div class="is-info" *ngIf="key | meal as item">
               <div>

@@ -2,50 +2,48 @@ import {createAction, createFeatureSelector, createReducer, createSelector, on, 
 import {UserSettings} from "../../shared/classes/user-settings";
 import {MealInfo} from "../../shared/classes/meal-info";
 import {CaloriesInfo} from "../../shared/classes/calories-info";
+import {CalendarState} from "../../shared/models/calendar-state";
+import {AbstractControl} from "@angular/forms";
 
-export const swipeLeft = createAction('[DATE] swipeLeft', props<{deltaWeek: number}>());
-export const swipeRight = createAction('[DATE] swipeRight', props<{deltaWeek: number}>());
-export const updateDateState = createAction(
+export const swipeLeft = createAction('[CALENDAR] swipeLeft', props<{deltaWeek: number, date: Date}>());
+export const swipeRight = createAction('[CALENDAR] swipeRight', props<{deltaWeek: number, date: Date}>());
+export const init = createAction('[CALENDAR] init', props<{deltaWeek: number, date: Date}>());
+export const updateCalendarState = createAction(
   '[DATE] updateDateState',
   props<{
-    date: Date,
-    keys: string[],
-    caloriesPerWeek: CaloriesInfo[];
+    data: CalendarState,
   }>());
-
-export interface CalendarState {
-  userSettings?: UserSettings;
-  meals: MealInfo[];
-  date: Date;
-  currentDay: Date;
-  keys: string[];
-  caloriesPerWeek: CaloriesInfo[];
-}
+export const updateMealsInput = createAction('[CALENDAR] updateMealsInput', props<{meal: MealInfo, form: AbstractControl}>());
+export const updateMealsOutput = createAction('[CALENDAR] updateMealsOutput', props<{meals: MealInfo[]}>());
+export const updateSettingsInput = createAction('[CALENDAR] updateSettingsInput', props<{form: AbstractControl}>());
+export const updateSettingsOutput = createAction('[CALENDAR] updateSettingsOutput', props<{settings: UserSettings}>());
 
 export const initialState: CalendarState = {
   meals: [],
   date: new Date(),
-  currentDay: new Date(),
   keys: [],
   caloriesPerWeek: [],
+  userSettings: new UserSettings(),
 };
 
 export const dateReducer = createReducer(
   initialState,
-  // on(swipeLeft, state => ({
-  //   ...state,
-  //   //deltaWeek: state.weekDays.length
-  // })),
-  // on(swipeRight, state => ({
-  //   ...state,
-  //   //deltaWeek: -state.weekDays.length
-  // })),
-  on(updateDateState, (state, action) => ({
+  on(updateCalendarState, (state, action) => ({
     ...state,
-    date: action.date,
-    keys: action.keys,
-    caloriesPerWeek: action.caloriesPerWeek
+    meals: action.data.meals,
+    date: action.data.date,
+    keys: action.data.keys,
+    caloriesPerWeek: action.data.caloriesPerWeek,
+    userSettings: action.data.userSettings,
   })),
+  on(updateMealsOutput, (state, action) => ({
+    ...state,
+    meals: action.meals,
+  })),
+  on(updateSettingsOutput, (state, action) => ({
+    ...state,
+    userSettings: action.settings,
+  }))
 );
 
 
@@ -62,6 +60,16 @@ export const keysSelector = createSelector(
 export const caloriesPerWeekSelector = createSelector(
   featureSelector,
   state => state.caloriesPerWeek
+)
+
+export const mealsSelector = createSelector(
+  featureSelector,
+  state => state.meals
+)
+
+export const userSettingsSelector = createSelector(
+  featureSelector,
+  state => state.userSettings
 )
 
 

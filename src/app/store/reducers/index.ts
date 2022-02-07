@@ -6,7 +6,8 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
-import {dateReducer, CalendarState} from "./calendar";
+import {dateReducer} from "./calendar";
+import {CalendarState} from "../../shared/models/calendar-state";
 
 export interface State {
   date: CalendarState;

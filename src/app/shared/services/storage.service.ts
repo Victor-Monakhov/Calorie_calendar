@@ -3,6 +3,7 @@ import {CaloriesInfo} from "../classes/calories-info";
 import {UserSettings} from "../classes/user-settings";
 import {MealInfo} from "../classes/meal-info";
 import {StorageKeys} from "../enums/storage-keys";
+import {Helper} from "../classes/helper";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class StorageService {
   constructor() {
   }
 
-  public getCaloriesPerWeek(weekLength: number): CaloriesInfo[] {
+  public getCaloriesPerWeek(): CaloriesInfo[] {
     const totalCalories = JSON.parse(localStorage.getItem(StorageKeys.caloriesKey) as string) ?? [];
     const resultTotalCalories = [];
-    for (let i = 0; i < weekLength; ++i) {
+    for (let i = 0; i < Helper.weekDays.length; ++i) {
       resultTotalCalories.push(new CaloriesInfo());
       Object.assign(resultTotalCalories[i], totalCalories[i]);
     }

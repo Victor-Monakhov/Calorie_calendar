@@ -1,13 +1,19 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, OnDestroy,
   OnInit,
 } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CalendarService} from "../../../../shared/services/calendar.service";
 import {GoogleLoginProvider, SocialAuthService} from "angularx-social-login";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {Store} from "@ngrx/store";
+import {updateSettingsInput, userSettingsSelector} from "../../../../store/reducers/calendar";
+import {SubSink} from "subsink";
+import {Observable} from "rxjs";
+import {UserSettings} from "../../../../shared/classes/user-settings";
+import {StorageKeys} from "../../../../shared/enums/storage-keys";
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +21,10 @@ import {AuthService} from "../../../../shared/services/auth.service";
   styleUrls: ['./settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
+
+  private subs: SubSink = new SubSink();
+  public userSettings$: Observable<UserSettings> = this.store.select(userSettingsSelector);
 
   public form: FormGroup = this.fb.group({
     gender: ['male'],
@@ -31,23 +40,28 @@ export class SettingsComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private calenderService: CalendarService,
-              private authService: AuthService) {
-    console.log('hi');
+              private authService: AuthService,
+              private store: Store) {
   }
 
   ngOnInit(): void {
-    this.form.setValue({
-      gender: this.calenderService.userSettings.gender,
-      age: this.calenderService.userSettings.age,
-      weight: this.calenderService.userSettings.weight,
-      height: this.calenderService.userSettings.height,
-      minKcal: this.calenderService.userSettings.minKcal,
-      maxKcal: this.calenderService.userSettings.maxKcal,
-      fats: this.calenderService.userSettings.fats,
-      proteins: this.calenderService.userSettings.proteins,
-      carbohydrates: this.calenderService.userSettings.carbohydrates
-    });
+    this.subs.add(this.userSettings$.subscribe(settings => {
+      this.form.setValue({
+        gender: settings.gender,
+        age: settings.age,
+        weight: settings.weight,
+        height: settings.height,
+        minKcal: settings.minKcal,
+        maxKcal: settings.maxKcal,
+        fats: settings.fats,
+        proteins: settings.proteins,
+        carbohydrates: settings.carbohydrates
+      });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   public onCancel(): void {
@@ -55,7 +69,7 @@ export class SettingsComponent implements OnInit {
   }
 
   public onSave(): void {
-    this.calenderService.updateUserSettings(this.form);
+    this.store.dispatch(updateSettingsInput({form: this.form.value}));
     this.router.navigate(['/calendar']);
   }
 

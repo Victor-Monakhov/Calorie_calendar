@@ -8,28 +8,28 @@
     <p class="p-label">Kcal</p>
     <p class="p-info"
        [class]="totalCalories?.status">
-      {{totalCalories?.amount + ' / ' + userSettings?.maxKcal}}
+      {{totalCalories?.amount + ' / ' + (userSettings$ | async)?.maxKcal}}
     </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Fats (gm)</p>
     <p class="p-info"
        [class]="totalCalories?.fatsStatus">
-      {{totalCalories?.fats + ' / ' + userSettings?.fats}}
+      {{totalCalories?.fats + ' / ' + (userSettings$ | async)?.fats}}
     </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Proteins (gm)</p>
     <p class="p-info"
        [class]="totalCalories?.proteinsStatus">
-      {{totalCalories?.proteins + ' / ' + userSettings?.proteins}}
+      {{totalCalories?.proteins + ' / ' + (userSettings$ | async)?.proteins}}
     </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Carbohydrates (gm)</p>
     <p class="p-info"
        [class]="totalCalories?.carbohydratesStatus">
-      {{totalCalories?.carbohydrates + ' / ' + userSettings?.carbohydrates}}
+      {{totalCalories?.carbohydrates + ' / ' + (userSettings$ | async)?.carbohydrates}}
     </p>
   </div>
   <div class="meal-container" *ngFor="let meal of meals" (click)="onMeal(meal.key)">
