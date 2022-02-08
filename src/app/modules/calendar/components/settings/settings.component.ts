@@ -3,17 +3,14 @@ import {
   Component, OnDestroy,
   OnInit,
 } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {CalendarService} from "../../../../shared/services/calendar.service";
-import {GoogleLoginProvider, SocialAuthService} from "angularx-social-login";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {Store} from "@ngrx/store";
-import {updateSettingsInput, userSettingsSelector} from "../../../../store/reducers/calendar";
+import {settingsSelector, updateSettingsInput} from "../../../../store/reducers/calendar";
 import {SubSink} from "subsink";
 import {Observable} from "rxjs";
-import {UserSettings} from "../../../../shared/classes/user-settings";
-import {StorageKeys} from "../../../../shared/enums/storage-keys";
+import {Settings} from "../../../../shared/classes/settings";
 
 @Component({
   selector: 'app-settings',
@@ -24,7 +21,7 @@ import {StorageKeys} from "../../../../shared/enums/storage-keys";
 export class SettingsComponent implements OnInit, OnDestroy {
 
   private subs: SubSink = new SubSink();
-  public userSettings$: Observable<UserSettings> = this.store.select(userSettingsSelector);
+  public userSettings$: Observable<Settings> = this.store.select(settingsSelector);
 
   public form: FormGroup = this.fb.group({
     gender: ['male'],

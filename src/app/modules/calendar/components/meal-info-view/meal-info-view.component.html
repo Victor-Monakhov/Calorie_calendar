@@ -1,9 +1,7 @@
 <button class="cancel-btn" (click)="onCancel()">Back</button>
 <div class="title-wrapper">
-  <h1>
-    {{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
-    (+meal.hours > 16) ? 'Dinner ' + meal.name :
-      'Lunch ' + meal.name}}
+  <h1 *ngIf="meal.key | meal as item">
+    {{item.type + ' ' + item.name}}
   </h1>
 </div>
 <div class="wrapper">

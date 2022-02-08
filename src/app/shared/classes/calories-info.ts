@@ -1,5 +1,6 @@
 export class CaloriesInfo {
-  public amount: number = 0;
+  public date = new Date;
+  public kcal: number = 0;
   public fats: number = 0;
   public proteins: number = 0;
   public carbohydrates: number = 0;
@@ -7,9 +8,6 @@ export class CaloriesInfo {
   public fatsStatus: string = 'blue';
   public proteinsStatus: string = 'blue';
   public carbohydratesStatus: string = 'blue';
-  public day: string = '0';
-  public month: string = '0';
-  public year: string = '0';
 
   constructor() {
   }

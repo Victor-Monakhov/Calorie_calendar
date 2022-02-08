@@ -1,50 +1,63 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
-  init,
-  swipeLeft,
-  swipeRight,
-  updateCalendarState,
+  getMealsInput,
+  getMealsOutput,
+  getSettingsInput,
+  getSettingsOutput,
   updateMealsInput,
-  updateMealsOutput,
-  updateSettingsInput, updateSettingsOutput
+  updateSettingsInput
 } from "../reducers/calendar";
 import {map} from "rxjs";
 import {CalendarService} from "../../shared/services/calendar.service";
+import {StorageService} from "../../shared/services/storage.service";
+import {Helper} from "../../shared/classes/helper";
 
 @Injectable()
 export class AppEffects {
 
-  updateDateState$ = createEffect(() => this.actions$.pipe(
-    ofType(swipeLeft, swipeRight, init),
+  getMeals$ = createEffect(() => this.actions$.pipe(
+    ofType(getMealsInput),
     map((action) => {
-      const data = this.calendarService.updateState(action.deltaWeek, action.date);
-      return updateCalendarState({
-        'data': data,
+      const meals = this.calendarService.getMeals(action.date);
+      return getMealsOutput({
+        'meals': meals,
+        'mondayDate': action.date,
       });
     })
   ));
 
-  updateMeals$ = createEffect(() => this.actions$.pipe(
+  updateMeals$ = createEffect( () => this.actions$.pipe(
     ofType(updateMealsInput),
     map((action) => {
       const meals = this.calendarService.updateMeals(action.meal, action.form);
-      return updateMealsOutput({
+      return getMealsOutput({
         'meals': meals,
+        'mondayDate': Helper.getMondayDate(action.meal.date),
       });
     })
   ));
 
-  userSettings$ = createEffect(() => this.actions$.pipe(
+  updateSettings$ = createEffect(() => this.actions$.pipe(
     ofType(updateSettingsInput),
     map((action) => {
-      const settings = this.calendarService.updateUserSettings(action.form);
-      return updateSettingsOutput({
+      const settings = this.calendarService.updateSettings(action.form);
+      return getSettingsOutput({
         'settings': settings,
       });
     })
   ));
 
-  constructor(private actions$: Actions, private calendarService: CalendarService) {
+  getSettings$ = createEffect(() => this.actions$.pipe(
+    ofType(getSettingsInput),
+    map((action) => {
+      const settings = this.storageService.getSettings();
+      return getSettingsOutput({
+        'settings': settings,
+      });
+    })
+  ));
+
+  constructor(private actions$: Actions, private calendarService: CalendarService, private storageService: StorageService) {
   }
 }

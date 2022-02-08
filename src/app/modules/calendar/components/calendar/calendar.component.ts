@@ -1,19 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Router} from "@angular/router";
-import {CaloriesInfo} from "../../../../shared/classes/calories-info";
 import {Helper} from "../../../../shared/classes/helper";
 import {Store} from "@ngrx/store";
 import {
-  caloriesPerWeekSelector,
-  dateSelector,
-  init,
-  keysSelector,
-  swipeLeft,
-  swipeRight
+  getMealsInput, getSettingsInput, mealsSelector, mondayDateSelector, settingsSelector,
 } from "../../../../store/reducers/calendar";
 import {SubSink} from "subsink";
-import {Observable} from "rxjs";
+import {combineLatest, map, Observable, of, switchMap, take} from "rxjs";
+import {MealInfo, MealsPerDay} from "../../../../shared/classes/meal-info";
+import {Settings} from "../../../../shared/classes/settings";
 
 
 @Component({
@@ -28,31 +23,52 @@ export class CalendarComponent implements OnInit, OnDestroy {
   public readonly months: string[] = Helper.months;
   public readonly times: string[] = Helper.times;
   public currentDate: Date = new Date();
-  public date: Date = new Date();
-  public date$: Observable<Date> = this.store.select(dateSelector);
-  public keys$: Observable<string[]> = this.store.select(keysSelector);
-  public caloriesPerWeek$: Observable<CaloriesInfo[]> = this.store.select(caloriesPerWeekSelector);
+  public date?: Date;
+  // private meals$: Observable<MealInfo[]> = this.store.select(mealsSelector);
+  // private date$: Observable<Date> = this.store.select(mondayDateSelector);
+  // private settings$: Observable<Settings> = this.store.select(settingsSelector);
+  public mealsPerWeek$: Observable<MealsPerDay[]> = combineLatest([
+    this.store.select(mealsSelector),
+    this.store.select(mondayDateSelector),
+    this.store.select(settingsSelector)
+  ]).pipe(
+    map((([meals, date, settings]) => {
+      return Helper.updateMealsPerWeek(meals, date, settings);
+    })
+  ));
 
   constructor(private store: Store, public router: Router) {
   }
 
-  ngOnInit(): void {
-    this.store.dispatch(init({deltaWeek: 0, date: this.date}));
-    this.subs.add(this.date$.subscribe(date => this.date = date));
+  private getMeals(): void{
+    if(this.date){
+      this.store.dispatch(getMealsInput({date: this.date}));
+    }
   }
 
-  ngOnDestroy() {
+  private setNextDate(deltaDays: number): void{
+    this.date?.setDate(this.date.getDate() + deltaDays);
+  }
+
+
+  public ngOnInit(): void {
+    this.subs.add(this.mealsPerWeek$.subscribe(mealsPerWeek => this.date = mealsPerWeek[0].caloriesInfo.date));
+    //this.store.dispatch(getSettingsInput());
+    this.getMeals();
+  }
+
+  public ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
   public onSwipeLeft(): void {
-    const deltaWeek = this.weekDays.length;
-    this.store.dispatch(swipeLeft({deltaWeek: deltaWeek, date: this.date}));
+    this.setNextDate(this.weekDays.length);
+    this.getMeals();
   }
 
   public onSwipeRight(): void {
-    const deltaWeek = -this.weekDays.length;
-    this.store.dispatch(swipeRight({deltaWeek: deltaWeek, date: this.date}));
+    this.setNextDate(-this.weekDays.length);
+    this.getMeals();
   }
 
   public onFood(info: string): void {
@@ -69,15 +85,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
       {queryParams: {'key': key, mode: 'create'}});
   }
 
-  public onDay(kcalAmount: number, day: string, month: string, year: string): void {
+  public onDay(kcalAmount: number, key: string): void {
     if (kcalAmount > 0) {
       this.router.navigate(['/day-overview'],
-        {queryParams: {'day': day, 'month': month, 'year': year}});
+       {queryParams: {'key': key}});
     }
   }
 
-  public checkCurrentDay(day: string): boolean {
-    const dynamicDate = `${day}${this.date.getMonth()}${this.date.getFullYear()}`;
+  public checkCurrentDay(date: Date): boolean {
+    const dynamicDate = `${date.getDate()}${date.getMonth()}${date.getFullYear()}`;
     const currentDate = `${this.currentDate.getDate()}${this.currentDate.getMonth()}${this.currentDate.getFullYear()}`
     return dynamicDate === currentDate;
   }

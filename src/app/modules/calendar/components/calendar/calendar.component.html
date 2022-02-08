@@ -7,25 +7,25 @@
     <div class="left-header-part">
       <button class="settings" (click)="onSettings()"></button>
       <button class="month">
-        <p>{{months[date.getMonth()]}}</p>
+        <p>{{months[date?.getMonth() ?? 0]}}</p>
         <div class="drop-down"></div>
       </button>
     </div>
     <div class="right-header-part">
       <div class="calories-checker">
         <div class="calorie-intake"
-             *ngFor="let calories of caloriesPerWeek$ | async;"
-             (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
-          <p [class]="calories.status">{{calories.amount === 0 ? '' : calories.amount}}</p>
+             *ngFor="let day of mealsPerWeek$ | async;"
+             (click)="onDay(day.caloriesInfo.kcal, day.keys[0])">
+          <p [class]="day.caloriesInfo.status">{{day.caloriesInfo.kcal === 0 ? '' : day.caloriesInfo.kcal}}</p>
         </div>
       </div>
       <div class="days-wrapper">
         <div class="day"
-             *ngFor="let calories of caloriesPerWeek$ | async; let i = index"
-             (click)="onDay(calories.amount, calories.day, calories.month, calories.year)">
+             *ngFor="let day of mealsPerWeek$ | async; let i = index"
+             (click)="onDay(day.caloriesInfo.kcal, day.keys[0])">
           <p class="date"
-             [ngClass]="{'current-day': checkCurrentDay(calories.day)}">
-            {{calories.day}}
+             [ngClass]="{'current-day': checkCurrentDay(day.caloriesInfo.date)}">
+            {{day.caloriesInfo.date.getDate()}}
           </p>
           <p>{{weekDays[i]}}</p>
         </div>
@@ -44,16 +44,20 @@
       <div class="horizontal-layer">
         <div *ngFor="let i of weekDays"></div>
       </div>
-      <div class="food-info-container" [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">
-        <div class="cell-wrapper"
-             *ngFor="let key of keys$ | async">
-          <div class="food-info" (click)="onFood(key)">
-            <div class="is-info" *ngIf="key | meal as item">
-              <div>
-                <p>{{item.type}}</p>
-                <p>{{item.name}}</p>
+      <!--      <div class="food-info-container" [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">-->
+      <div class="food-info-wrapper">
+        <div class="food-info-container"
+             *ngFor="let day of mealsPerWeek$ | async; let i = index"
+             [style]="{'grid-template-rows' : 'repeat(' + times.length + ', 1fr)'}">
+          <div class="cell-wrapper" *ngFor="let key of day.keys">
+            <div class="food-info" (click)="onFood(key)">
+              <div class="is-info" *ngIf="key | meal as item">
+                <div>
+                  <p>{{item.type}}</p>
+                  <p>{{item.name}}</p>
+                </div>
+                <p class="bold">{{item.kcal}}</p>
               </div>
-              <p class="bold">{{item.kcal}}</p>
             </div>
           </div>
         </div>

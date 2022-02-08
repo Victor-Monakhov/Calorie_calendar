@@ -1,12 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CalendarService} from "../../../../shared/services/calendar.service";
 import {MealInfo} from "../../../../shared/classes/meal-info";
-import {UserSettings} from "../../../../shared/classes/user-settings";
+import {Settings} from "../../../../shared/classes/settings";
 import {CaloriesInfo} from "../../../../shared/classes/calories-info";
-import {Observable} from "rxjs";
+import {combineLatest, map, Observable} from "rxjs";
 import {Store} from "@ngrx/store";
-import {caloriesPerWeekSelector, mealsSelector, userSettingsSelector} from "../../../../store/reducers/calendar";
+import {
+  mealsSelector,
+  settingsSelector
+} from "../../../../store/reducers/calendar";
 import {Helper} from "../../../../shared/classes/helper";
 import {SubSink} from "subsink";
 
@@ -22,13 +24,10 @@ export class DayOverviewComponent implements OnInit, OnDestroy {
   public months: string[] = Helper.months;
   public isCurrentDay: boolean = false;
   public currentDay: Date = new Date();
-  public day: number = 0;
-  public month: number = 0;
-  public year: number = 0;
+  public date?: Date;
+  public caloriesInfo?: CaloriesInfo;
   public meals$: Observable<MealInfo[]> = this.store.select(mealsSelector);
-  public caloriesPerWeek$: Observable<CaloriesInfo[]> = this.store.select(caloriesPerWeekSelector);
-  public userSettings$: Observable<UserSettings> = this.store.select(userSettingsSelector);
-  public totalCalories?: CaloriesInfo;
+  public settings$: Observable<Settings> = this.store.select(settingsSelector);
 
   constructor(private store: Store,
               private router: Router,
@@ -36,21 +35,26 @@ export class DayOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.day = +this.aRoute.snapshot.queryParams['day'];
-    this.month = +this.aRoute.snapshot.queryParams['month'];
-    this.year = +this.aRoute.snapshot.queryParams['year'];
-    this.subs.add(this.meals$.subscribe(meals => {
-      this.meals = meals.filter(meal => meal.day === this.day && meal.month === this.month && meal.year === this.year);
-    }));
-    this.subs.add(this.caloriesPerWeek$.subscribe(kcalPerWeek => {
-      this.totalCalories = kcalPerWeek.find(caloriesInfo => {
-        return +caloriesInfo.day === this.day && +caloriesInfo.month === this.month && +caloriesInfo.year === this.year;
-      });
-    }));
-    this.meals.sort((a, b) => +a.hours - +b.hours);
-    this.isCurrentDay = this.day === this.currentDay.getDate() &&
-      this.month === this.currentDay.getMonth() &&
-      this.year === this.currentDay.getFullYear();
+    this.date = Helper.getDateFromKey(this.aRoute.snapshot.queryParams['key']);
+    if(this.date) {
+      this.subs.add(combineLatest([this.meals$, this.settings$])
+        .subscribe(([meals, settings]) => {
+          this.meals = meals.filter(meal => {
+            return meal.date.getDate() === this.date?.getDate() &&
+              meal.date.getMonth() === this.date?.getMonth() &&
+              meal.date.getFullYear() === this.date?.getFullYear()
+          });
+          this.caloriesInfo = Helper.getCaloriesInfo(this.date as Date, this.meals, settings);
+          this.meals.sort((a, b) => {
+            return +a.time.split(':')[0] - +b.time.split(':')[0];
+          });
+          this.isCurrentDay = this.date?.getDate() === this.currentDay.getDate() &&
+            this.date?.getMonth() === this.currentDay.getMonth() &&
+            this.date?.getFullYear() === this.currentDay.getFullYear();
+        }));
+    } else {
+      this.onCancel();
+    }
   }
 
   ngOnDestroy() {

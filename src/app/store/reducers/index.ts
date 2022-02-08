@@ -1,12 +1,9 @@
 import {
-  ActionReducer,
   ActionReducerMap,
-  createFeatureSelector,
-  createSelector,
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
-import {dateReducer} from "./calendar";
+import {calendarReducer} from "./calendar";
 import {CalendarState} from "../../shared/models/calendar-state";
 
 export interface State {
@@ -14,7 +11,7 @@ export interface State {
 }
 
 export const reducers: ActionReducerMap<State> = {
-  date: dateReducer
+  date: calendarReducer
 };
 
 

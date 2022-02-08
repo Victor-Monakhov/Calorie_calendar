@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MealInfo} from "../../../../shared/classes/meal-info";
-import {CalendarService} from "../../../../shared/services/calendar.service";
 import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {mealsSelector} from "../../../../store/reducers/calendar";

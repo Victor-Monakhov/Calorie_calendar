@@ -1,4 +1,4 @@
-export class UserSettings {
+export class Settings {
   public gender: string = 'male';
   public age: number = 25;
   public weight: number = 55;

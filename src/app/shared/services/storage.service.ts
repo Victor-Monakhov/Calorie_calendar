@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CaloriesInfo} from "../classes/calories-info";
-import {UserSettings} from "../classes/user-settings";
+import {Settings} from "../classes/settings";
 import {MealInfo} from "../classes/meal-info";
 import {StorageKeys} from "../enums/storage-keys";
 import {Helper} from "../classes/helper";
@@ -23,8 +23,8 @@ export class StorageService {
     return resultTotalCalories;
   }
 
-  public getUserSettings(): UserSettings {
-    return JSON.parse(localStorage.getItem(StorageKeys.settingsKey) as string) ?? new UserSettings();
+  public getSettings(): Settings {
+    return JSON.parse(localStorage.getItem(StorageKeys.settingsKey) as string) ?? new Settings();
   }
 
   public getMeals(): MealInfo[] {

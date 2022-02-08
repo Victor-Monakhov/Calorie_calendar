@@ -1,65 +1,43 @@
 import {createAction, createFeatureSelector, createReducer, createSelector, on, props} from '@ngrx/store';
-import {UserSettings} from "../../shared/classes/user-settings";
+import {Settings} from "../../shared/classes/settings";
 import {MealInfo} from "../../shared/classes/meal-info";
-import {CaloriesInfo} from "../../shared/classes/calories-info";
 import {CalendarState} from "../../shared/models/calendar-state";
 import {AbstractControl} from "@angular/forms";
+import {Helper} from "../../shared/classes/helper";
 
-export const swipeLeft = createAction('[CALENDAR] swipeLeft', props<{deltaWeek: number, date: Date}>());
-export const swipeRight = createAction('[CALENDAR] swipeRight', props<{deltaWeek: number, date: Date}>());
-export const init = createAction('[CALENDAR] init', props<{deltaWeek: number, date: Date}>());
-export const updateCalendarState = createAction(
-  '[DATE] updateDateState',
-  props<{
-    data: CalendarState,
-  }>());
+export const getMealsInput = createAction('[CALENDAR] getMealsInput', props<{date: Date}>());
+export const getMealsOutput = createAction('[CALENDAR] getMealsOutput', props<{meals: MealInfo[], mondayDate: Date}>());
+export const getSettingsInput = createAction('[CALENDAR] getSettings');
+export const getSettingsOutput = createAction('[CALENDAR] getSettings', props<{settings: Settings}>());
 export const updateMealsInput = createAction('[CALENDAR] updateMealsInput', props<{meal: MealInfo, form: AbstractControl}>());
-export const updateMealsOutput = createAction('[CALENDAR] updateMealsOutput', props<{meals: MealInfo[]}>());
 export const updateSettingsInput = createAction('[CALENDAR] updateSettingsInput', props<{form: AbstractControl}>());
-export const updateSettingsOutput = createAction('[CALENDAR] updateSettingsOutput', props<{settings: UserSettings}>());
+
 
 export const initialState: CalendarState = {
   meals: [],
-  date: new Date(),
-  keys: [],
-  caloriesPerWeek: [],
-  userSettings: new UserSettings(),
+  mondayDate: Helper.getMondayDate(new Date()),
+  settings: new Settings(),
 };
 
-export const dateReducer = createReducer(
+export const calendarReducer = createReducer(
   initialState,
-  on(updateCalendarState, (state, action) => ({
+  on(getMealsOutput, (state, action) => ({
     ...state,
-    meals: action.data.meals,
-    date: action.data.date,
-    keys: action.data.keys,
-    caloriesPerWeek: action.data.caloriesPerWeek,
-    userSettings: action.data.userSettings,
+      meals: action.meals,
+      mondayDate: action.mondayDate
   })),
-  on(updateMealsOutput, (state, action) => ({
+  on(getSettingsOutput, (state, action) => ({
     ...state,
-    meals: action.meals,
+      settings: action.settings,
   })),
-  on(updateSettingsOutput, (state, action) => ({
-    ...state,
-    userSettings: action.settings,
-  }))
 );
 
 
 
 export const featureSelector = createFeatureSelector<CalendarState>('date');
-export const dateSelector = createSelector(
+export const mondayDateSelector = createSelector(
   featureSelector,
-  state => state.date
-)
-export const keysSelector = createSelector(
-  featureSelector,
-  state => state.keys
-)
-export const caloriesPerWeekSelector = createSelector(
-  featureSelector,
-  state => state.caloriesPerWeek
+  state => state.mondayDate
 )
 
 export const mealsSelector = createSelector(
@@ -67,9 +45,20 @@ export const mealsSelector = createSelector(
   state => state.meals
 )
 
-export const userSettingsSelector = createSelector(
+export const settingsSelector = createSelector(
   featureSelector,
-  state => state.userSettings
+  state => state.settings
 )
+
+// export const keysSelector = createSelector(
+//   featureSelector,
+//   state => state.keys
+// )
+// export const caloriesPerWeekSelector = createSelector(
+//   featureSelector,
+//   state => state.caloriesPerWeek
+// )
+//
+
 
 

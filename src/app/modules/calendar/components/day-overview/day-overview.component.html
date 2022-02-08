@@ -1,41 +1,39 @@
 <button class="cancel-btn" (click)="onCancel()">Back</button>
 <div class="title-wrapper">
-  <h1>{{(isCurrentDay) ? 'Today' : months[month] + ' ' + day}}</h1>
+  <h1>{{(isCurrentDay) ? 'Today' : months[date?.getMonth() ?? 0] + ' ' + date?.getDate() ?? 1}}</h1>
 </div>
 <div class="wrapper">
   <div class="background-logo"></div>
   <div class="item-wrapper">
     <p class="p-label">Kcal</p>
     <p class="p-info"
-       [class]="totalCalories?.status">
-      {{totalCalories?.amount + ' / ' + (userSettings$ | async)?.maxKcal}}
+       [class]="caloriesInfo?.status">
+      {{caloriesInfo?.kcal + ' / ' + (settings$ | async)?.maxKcal}}
     </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Fats (gm)</p>
     <p class="p-info"
-       [class]="totalCalories?.fatsStatus">
-      {{totalCalories?.fats + ' / ' + (userSettings$ | async)?.fats}}
+       [class]="caloriesInfo?.fatsStatus">
+      {{caloriesInfo?.fats + ' / ' + (settings$ | async)?.fats}}
     </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Proteins (gm)</p>
     <p class="p-info"
-       [class]="totalCalories?.proteinsStatus">
-      {{totalCalories?.proteins + ' / ' + (userSettings$ | async)?.proteins}}
+       [class]="caloriesInfo?.proteinsStatus">
+      {{caloriesInfo?.proteins + ' / ' + (settings$ | async)?.proteins}}
     </p>
   </div>
   <div class="item-wrapper">
     <p class="p-label">Carbohydrates (gm)</p>
     <p class="p-info"
-       [class]="totalCalories?.carbohydratesStatus">
-      {{totalCalories?.carbohydrates + ' / ' + (userSettings$ | async)?.carbohydrates}}
+       [class]="caloriesInfo?.carbohydratesStatus">
+      {{caloriesInfo?.carbohydrates + ' / ' + (settings$ | async)?.carbohydrates}}
     </p>
   </div>
-  <div class="meal-container" *ngFor="let meal of meals" (click)="onMeal(meal.key)">
-    <p>{{(+meal.hours < 12) ? 'Breakfast ' + meal.name :
-      (+meal.hours > 16) ? 'Dinner ' + meal.name :
-        'Lunch ' + meal.name}}</p>
+  <div class="meal-container" *ngFor="let meal of meals;" (click)="onMeal(meal.key)">
+    <p *ngIf="meal.key | meal as item">{{item.type + ' ' + item.name}}</p>
     <div>
       <p class="bold">{{meal.kcal}}</p>
       <p class="bold">{{meal.time}}</p>

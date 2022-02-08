@@ -214,11 +214,16 @@ $cell-height: 6vh;
         }
       }
 
+      .food-info-wrapper{
+        display: flex;
+        flex-direction: row;
+      }
+
       .food-info-container {
         display: grid;
         width: 100%;
-        grid-template-columns: repeat(7, 1fr);
-        grid-template-rows: repeat(17, 1fr);
+        //grid-template-columns: repeat(7, 1fr);
+        //grid-template-rows: repeat(17, 1fr);
 
         .food-info {
           position: absolute;
