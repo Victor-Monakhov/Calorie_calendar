@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {Helper} from "../../../../shared/classes/helper";
 import {Store} from "@ngrx/store";
 import {
-  getMealsInput, getSettingsInput, mealsSelector, mondayDateSelector, settingsSelector,
+  getMealsInput, mealsSelector, mondayDateSelector, settingsSelector,
 } from "../../../../store/reducers/calendar";
 import {SubSink} from "subsink";
-import {combineLatest, map, Observable, of, switchMap, take} from "rxjs";
-import {MealInfo, MealsPerDay} from "../../../../shared/classes/meal-info";
+import {first, map, Observable, publish, refCount, share, shareReplay, withLatestFrom,} from "rxjs";
+import {MealsPerDay} from "../../../../shared/classes/meal-info";
 import {Settings} from "../../../../shared/classes/settings";
 
 
@@ -23,52 +23,48 @@ export class CalendarComponent implements OnInit, OnDestroy {
   public readonly months: string[] = Helper.months;
   public readonly times: string[] = Helper.times;
   public currentDate: Date = new Date();
-  public date?: Date;
-  // private meals$: Observable<MealInfo[]> = this.store.select(mealsSelector);
-  // private date$: Observable<Date> = this.store.select(mondayDateSelector);
-  // private settings$: Observable<Settings> = this.store.select(settingsSelector);
-  public mealsPerWeek$: Observable<MealsPerDay[]> = combineLatest([
-    this.store.select(mealsSelector),
-    this.store.select(mondayDateSelector),
-    this.store.select(settingsSelector)
-  ]).pipe(
-    map((([meals, date, settings]) => {
-      return Helper.updateMealsPerWeek(meals, date, settings);
-    })
-  ));
+  public date: Date = Helper.getMondayDate(new Date());
+  public settings$: Observable<Settings> = this.store.select(settingsSelector);
+  public mealsPerWeek$: Observable<MealsPerDay[]> =
+    //this.aRoute.snapshot.data['mealsPerWeek'];
+    this.store.select(mealsSelector).pipe(
+      withLatestFrom(
+        this.store.select(settingsSelector),
+        this.store.select(mondayDateSelector)
+      ),
+      map(([meals, settings, date]) => {
+        console.log('meals', meals)
+        return Helper.updateMealsPerWeek(meals, date, settings);
+      }),
+      share()
+    );
 
-  constructor(private store: Store, public router: Router) {
+  constructor(private store: Store, public router: Router, private aRoute: ActivatedRoute) {
   }
-
-  private getMeals(): void{
-    if(this.date){
-      this.store.dispatch(getMealsInput({date: this.date}));
-    }
-  }
-
-  private setNextDate(deltaDays: number): void{
-    this.date?.setDate(this.date.getDate() + deltaDays);
-  }
-
 
   public ngOnInit(): void {
-    this.subs.add(this.mealsPerWeek$.subscribe(mealsPerWeek => this.date = mealsPerWeek[0].caloriesInfo.date));
-    //this.store.dispatch(getSettingsInput());
-    this.getMeals();
+    setTimeout(() =>this.store.dispatch(getMealsInput({date: this.date})), 0);
   }
 
   public ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
+  private setNextDate(deltaDays: number): void {
+    this.date?.setDate(this.date.getDate() + deltaDays);
+  }
+
+
   public onSwipeLeft(): void {
+    console.log('left');
     this.setNextDate(this.weekDays.length);
-    this.getMeals();
+    this.store.dispatch(getMealsInput({date: this.date}));
   }
 
   public onSwipeRight(): void {
+    console.log('right');
     this.setNextDate(-this.weekDays.length);
-    this.getMeals();
+    this.store.dispatch(getMealsInput({date: this.date}));
   }
 
   public onFood(info: string): void {
@@ -88,7 +84,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   public onDay(kcalAmount: number, key: string): void {
     if (kcalAmount > 0) {
       this.router.navigate(['/day-overview'],
-       {queryParams: {'key': key}});
+        {queryParams: {'key': key}});
     }
   }
 

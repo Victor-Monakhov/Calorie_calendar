@@ -43,13 +43,13 @@ export class Helper {
     return new Date(+info[2], +info[1], +info[0], +info[3], +info[4], 0);
   }
 
-  public static keysInitEmpty(): string[]{
-    const keys: string[] = [];
-    for (let i = 0; i < Helper.weekDays.length * Helper.times.length; ++i) {
-      keys.push('');
-    }
-    return keys;
-  }
+  // public static keysInitEmpty(): string[]{
+  //   const keys: string[] = [];
+  //   for (let i = 0; i < Helper.weekDays.length * Helper.times.length; ++i) {
+  //     keys.push('');
+  //   }
+  //   return keys;
+  // }
 
   public static updateMealsPerWeek(meals: MealInfo[], date: Date, settings: Settings): MealsPerDay[]{
     const mealsPerWeek: MealsPerDay[] = [];
@@ -75,8 +75,8 @@ export class Helper {
   }
 
   public static getCaloriesInfo(date: Date, meals: MealInfo[], settings: Settings){
-      const caloriesInfo = new CaloriesInfo();
-      meals.forEach(item => {
+    const caloriesInfo = new CaloriesInfo();
+    meals.forEach(item => {
         if (item.date.getDate() === date.getDate() &&
           item.date.getMonth() === date.getMonth() &&
           item.date.getFullYear() === date.getFullYear()) {
@@ -86,7 +86,7 @@ export class Helper {
           caloriesInfo.carbohydrates += +item.carbohydrates;
         }
       });
-    caloriesInfo.date = new Date(date);
+      caloriesInfo.date = new Date(date);
       caloriesInfo.status = caloriesInfo.getStatus(settings.minKcal, settings.maxKcal, caloriesInfo.kcal);
       caloriesInfo.fatsStatus = caloriesInfo.getStatus(settings.fats, settings.fats, caloriesInfo.fats);
       caloriesInfo.proteinsStatus = caloriesInfo.getStatus(settings.proteins, settings.proteins, caloriesInfo.proteins);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {Actions, createEffect, Effect, ofType} from '@ngrx/effects';
 import {
   getMealsInput,
   getMealsOutput,
@@ -8,7 +8,7 @@ import {
   updateMealsInput,
   updateSettingsInput
 } from "../reducers/calendar";
-import {map} from "rxjs";
+import {catchError, map, switchMap, tap} from "rxjs";
 import {CalendarService} from "../../shared/services/calendar.service";
 import {StorageService} from "../../shared/services/storage.service";
 import {Helper} from "../../shared/classes/helper";
@@ -19,24 +19,21 @@ export class AppEffects {
   getMeals$ = createEffect(() => this.actions$.pipe(
     ofType(getMealsInput),
     map((action) => {
-      const meals = this.calendarService.getMeals(action.date);
+      const date = action.date;
+      const meals = this.calendarService.getMeals(date);
       return getMealsOutput({
         'meals': meals,
-        'mondayDate': action.date,
+        'mondayDate': date,
       });
     })
   ));
 
   updateMeals$ = createEffect( () => this.actions$.pipe(
     ofType(updateMealsInput),
-    map((action) => {
-      const meals = this.calendarService.updateMeals(action.meal, action.form);
-      return getMealsOutput({
-        'meals': meals,
-        'mondayDate': Helper.getMondayDate(action.meal.date),
-      });
-    })
-  ));
+    tap((action) => {
+      this.calendarService.updateMeals(action.meal, action.form);
+    }),
+  ), {dispatch: false});
 
   updateSettings$ = createEffect(() => this.actions$.pipe(
     ofType(updateSettingsInput),
@@ -49,7 +46,7 @@ export class AppEffects {
   ));
 
   getSettings$ = createEffect(() => this.actions$.pipe(
-    ofType(getSettingsInput),
+    ofType(getMealsOutput),
     map((action) => {
       const settings = this.storageService.getSettings();
       return getSettingsOutput({
@@ -58,6 +55,8 @@ export class AppEffects {
     })
   ));
 
-  constructor(private actions$: Actions, private calendarService: CalendarService, private storageService: StorageService) {
+  constructor(private actions$: Actions,
+              private calendarService: CalendarService,
+              private storageService: StorageService) {
   }
 }

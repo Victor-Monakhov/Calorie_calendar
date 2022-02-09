@@ -24,7 +24,7 @@ export const calendarReducer = createReducer(
   on(getMealsOutput, (state, action) => ({
     ...state,
       meals: action.meals,
-      mondayDate: action.mondayDate
+      mondayDate: action.mondayDate,
   })),
   on(getSettingsOutput, (state, action) => ({
     ...state,
@@ -49,11 +49,6 @@ export const settingsSelector = createSelector(
   featureSelector,
   state => state.settings
 )
-
-// export const keysSelector = createSelector(
-//   featureSelector,
-//   state => state.keys
-// )
 // export const caloriesPerWeekSelector = createSelector(
 //   featureSelector,
 //   state => state.caloriesPerWeek

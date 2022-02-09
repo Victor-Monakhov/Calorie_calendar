@@ -17,10 +17,6 @@ export class CalendarService {
 
   constructor(private storageService: StorageService) {
   }
-  // private updateDate(date: Date){
-  //   let tmpDate = new Date();
-  //   tmpDate.s
-  // }
 
   public getMeals(date: Date): MealInfo[]{
     const allMeals = this.storageService.getMeals();
@@ -36,6 +32,7 @@ export class CalendarService {
         dateClone.setFullYear(year);
         dateClone.setDate(day + i);
         allMeals.forEach(meal => {
+          meal.date = new Date(meal.date);
           if (meal.date.getDate() === dateClone.getDate() &&
             meal.date.getMonth() === dateClone.getMonth() &&
             meal.date.getFullYear() === dateClone.getFullYear()) {
@@ -47,7 +44,7 @@ export class CalendarService {
     return meals;
   }
 
-    public updateMeals(meal: MealInfo, form: AbstractControl): MealInfo[] {
+    public updateMeals(meal: MealInfo, form: AbstractControl): void {
     const tmpMeal = new MealInfo(meal.key);
     Object.assign(tmpMeal, form);
     let isEdited: boolean = false;
@@ -64,7 +61,6 @@ export class CalendarService {
       meals.push(tmpMeal);
     }
     this.storageService.setItem(StorageKeys.mealsKey, meals);
-    return this.getMeals(Helper.getMondayDate(meal.date));
   }
 
     public updateSettings(form: AbstractControl): Settings {
